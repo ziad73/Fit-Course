@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - LearnHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+        }
+        
+        .profile-stats {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .profile-card .card-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 600;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+        
+        .btn-save {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-save:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+        
+        .achievement-badge {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 0.25rem;
+            display: inline-block;
+        }
+        
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 0deg, #e9ecef 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        
+        .progress-circle .inner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="fas fa-graduation-cap me-2"></i>LearnHub
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="courses.html">Courses</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Programming</a></li>
+                            <li><a class="dropdown-item" href="#">Design</a></li>
+                            <li><a class="dropdown-item" href="#">Business</a></li>
+                            <li><a class="dropdown-item" href="#">Marketing</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="input-group me-3" style="max-width: 300px;">
+                        <input type="text" class="form-control" placeholder="Search courses...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <button class="btn btn-outline-secondary me-2" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="dropdown" id="userMenu">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>Profile
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+                            <li><a class="dropdown-item active" href="profile.html">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Sign Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <img src="https://via.placeholder.com/150/2563eb/ffffff?text=JD" alt="Profile Avatar" class="profile-avatar mb-3">
+                    <button class="btn btn-outline-light btn-sm" onclick="document.getElementById('avatarInput').click()">
+                        <i class="fas fa-camera me-1"></i>Change Photo
+                    </button>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+                <div class="col-md-9">
+                    <h1 class="display-5 fw-bold mb-2">John Doe</h1>
+                    <p class="lead mb-3">Full-Stack Web Developer | Learning Enthusiast</p>
+                    <p class="mb-3">Member since January 2024</p>
+                    
+                    <div class="profile-stats">
+                        <div class="row text-center">
+                            <div class="col-3">
+                                <div class="fw-bold">12</div>
+                                <small class="text-white-50">Courses</small>
+                            </div>
+                            <div class="col-3">
+                                <div class="fw-bold">156</div>
+                                <small class="text-white-50">Lessons</small>
+                            </div>
+                            <div class="col-3">
+                                <div class="fw-bold">42.5h</div>
+                                <small class="text-white-50">Learning</small>
+                            </div>
+                            <div class="col-3">
+                                <div class="fw-bold">8</div>
+                                <small class="text-white-50">Certificates</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Profile Information -->
+            <div class="col-lg-8">
+                <!-- Personal Information -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-user me-2"></i>Personal Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="personalInfoForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" value="John" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" value="Doe" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" value="john.doe@example.com" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" value="San Francisco, CA">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="bio" class="form-label">Bio</label>
+                                <textarea class="form-control" id="bio" rows="3" placeholder="Tell us about yourself...">Passionate web developer with a love for learning and teaching. Always excited to explore new technologies and share knowledge with the community.</textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Learning Preferences -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-cog me-2"></i>Learning Preferences</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="preferencesForm">
+                            <div class="mb-3">
+                                <label for="interests" class="form-label">Learning Interests</label>
+                                <select class="form-select" id="interests" multiple>
+                                    <option value="programming" selected>Programming & Development</option>
+                                    <option value="design" selected>Design & Creative</option>
+                                    <option value="business">Business & Marketing</option>
+                                    <option value="languages">Languages</option>
+                                    <option value="science" selected>Science & Technology</option>
+                                    <option value="arts">Arts & Humanities</option>
+                                    <option value="health">Health & Fitness</option>
+                                    <option value="finance">Finance & Investment</option>
+                                </select>
+                                <div class="form-text">Hold Ctrl (or Cmd on Mac) to select multiple interests</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="difficulty" class="form-label">Preferred Difficulty Level</label>
+                                <select class="form-select" id="difficulty">
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate" selected>Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                    <option value="all">All Levels</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="learningTime" class="form-label">Preferred Learning Time</label>
+                                <select class="form-select" id="learningTime">
+                                    <option value="morning">Morning (6 AM - 12 PM)</option>
+                                    <option value="afternoon" selected>Afternoon (12 PM - 6 PM)</option>
+                                    <option value="evening">Evening (6 PM - 12 AM)</option>
+                                    <option value="night">Night (12 AM - 6 AM)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="weeklyGoal" class="form-label">Weekly Learning Goal</label>
+                                <select class="form-select" id="weeklyGoal">
+                                    <option value="5">5 hours</option>
+                                    <option value="10" selected>10 hours</option>
+                                    <option value="15">15 hours</option>
+                                    <option value="20">20+ hours</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="emailNotifications" checked>
+                                <label class="form-check-label" for="emailNotifications">
+                                    Receive email notifications about new courses and updates
+                                </label>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="newsletter" checked>
+                                <label class="form-check-label" for="newsletter">
+                                    Subscribe to our newsletter for learning tips and special offers
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save me-2"></i>Save Preferences
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Security Settings</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="securityForm">
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" required>
+                                <div class="form-text">Password must be at least 8 characters long</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="twoFactorAuth">
+                                <label class="form-check-label" for="twoFactorAuth">
+                                    Enable two-factor authentication
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-save">
+                                <i class="fas fa-save me-2"></i>Update Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Sidebar -->
+            <div class="col-lg-4">
+                <!-- Learning Progress -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Learning Progress</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="progress-circle mb-3">
+                            <div class="inner">75%</div>
+                        </div>
+                        <h6>Overall Progress</h6>
+                        <p class="text-muted">You're making great progress!</p>
+                        
+                        <div class="row text-center mt-4">
+                            <div class="col-6">
+                                <div class="fw-bold text-primary">8</div>
+                                <small class="text-muted">Completed</small>
+                            </div>
+                            <div class="col-6">
+                                <div class="fw-bold text-warning">4</div>
+                                <small class="text-muted">In Progress</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-trophy me-2"></i>Achievements</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="achievement-badge">
+                            <i class="fas fa-star me-1"></i>First Course
+                        </div>
+                        <div class="achievement-badge">
+                            <i class="fas fa-fire me-1"></i>7-Day Streak
+                        </div>
+                        <div class="achievement-badge">
+                            <i class="fas fa-graduation-cap me-1"></i>Quick Learner
+                        </div>
+                        <div class="achievement-badge">
+                            <i class="fas fa-users me-1"></i>Community Helper
+                        </div>
+                        <div class="achievement-badge">
+                            <i class="fas fa-clock me-1"></i>Night Owl
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold small">Completed lesson</div>
+                                <div class="text-muted small">CSS Grid Layout</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold small">Earned certificate</div>
+                                <div class="text-muted small">HTML Fundamentals</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold small">Added to wishlist</div>
+                                <div class="text-muted small">React Advanced</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="#" class="btn btn-outline-primary btn-sm">View All Activity</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="profile-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="dashboard.html" class="btn btn-outline-primary">
+                                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                            </a>
+                            <a href="courses.html" class="btn btn-outline-secondary">
+                                <i class="fas fa-search me-2"></i>Browse Courses
+                            </a>
+                            <button class="btn btn-outline-success">
+                                <i class="fas fa-download me-2"></i>Download Certificate
+                            </button>
+                            <button class="btn btn-outline-info">
+                                <i class="fas fa-share me-2"></i>Share Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>LearnHub</h5>
+                    <p class="mb-0">Empowering learners worldwide with quality education.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2024 LearnHub. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Profile page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const avatarInput = document.getElementById('avatarInput');
+            const personalInfoForm = document.getElementById('personalInfoForm');
+            const preferencesForm = document.getElementById('preferencesForm');
+            const securityForm = document.getElementById('securityForm');
+
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('learnhub_user'));
+            if (!currentUser) {
+                alert('Please sign in to access your profile.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Load user data
+            loadUserData();
+
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('learnhub_theme', newTheme);
+                
+                const icon = this.querySelector('i');
+                icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            });
+
+            // Load saved theme
+            const savedTheme = localStorage.getItem('learnhub_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const icon = themeToggle.querySelector('i');
+            icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+            // Avatar change functionality
+            avatarInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const avatar = document.querySelector('.profile-avatar');
+                        avatar.src = e.target.result;
+                        
+                        // Save to localStorage
+                        currentUser.avatar = e.target.result;
+                        localStorage.setItem('learnhub_user', JSON.stringify(currentUser));
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Personal info form submission
+            personalInfoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    location: document.getElementById('location').value,
+                    bio: document.getElementById('bio').value
+                };
+                
+                // Update user data
+                currentUser.name = `${formData.firstName} ${formData.lastName}`;
+                currentUser.email = formData.email;
+                currentUser.phone = formData.phone;
+                currentUser.location = formData.location;
+                currentUser.bio = formData.bio;
+                
+                localStorage.setItem('learnhub_user', JSON.stringify(currentUser));
+                
+                // Update display
+                document.querySelector('.profile-header h1').textContent = currentUser.name;
+                
+                showNotification('Personal information updated successfully!', 'success');
+            });
+
+            // Preferences form submission
+            preferencesForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    interests: Array.from(document.getElementById('interests').selectedOptions).map(option => option.value),
+                    difficulty: document.getElementById('difficulty').value,
+                    learningTime: document.getElementById('learningTime').value,
+                    weeklyGoal: document.getElementById('weeklyGoal').value,
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    newsletter: document.getElementById('newsletter').checked
+                };
+                
+                // Save preferences
+                localStorage.setItem('learnhub_preferences', JSON.stringify(formData));
+                
+                showNotification('Learning preferences updated successfully!', 'success');
+            });
+
+            // Security form submission
+            securityForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Simple validation
+                if (newPassword.length < 8) {
+                    showNotification('Password must be at least 8 characters long', 'error');
+                    return;
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    showNotification('New passwords do not match', 'error');
+                    return;
+                }
+                
+                // In a real app, you would verify the current password
+                // For demo purposes, we'll just update it
+                currentUser.password = newPassword;
+                localStorage.setItem('learnhub_user', JSON.stringify(currentUser));
+                
+                // Clear form
+                securityForm.reset();
+                
+                showNotification('Password updated successfully!', 'success');
+            });
+
+            function loadUserData() {
+                // Load user data into forms
+                if (currentUser.name) {
+                    const nameParts = currentUser.name.split(' ');
+                    document.getElementById('firstName').value = nameParts[0] || '';
+                    document.getElementById('lastName').value = nameParts.slice(1).join(' ') || '';
+                }
+                
+                if (currentUser.email) {
+                    document.getElementById('email').value = currentUser.email;
+                }
+                
+                if (currentUser.phone) {
+                    document.getElementById('phone').value = currentUser.phone;
+                }
+                
+                if (currentUser.location) {
+                    document.getElementById('location').value = currentUser.location;
+                }
+                
+                if (currentUser.bio) {
+                    document.getElementById('bio').value = currentUser.bio;
+                }
+                
+                // Load preferences
+                const preferences = JSON.parse(localStorage.getItem('learnhub_preferences')) || {};
+                if (preferences.interests) {
+                    preferences.interests.forEach(interest => {
+                        const option = document.querySelector(`#interests option[value="${interest}"]`);
+                        if (option) option.selected = true;
+                    });
+                }
+                
+                if (preferences.difficulty) {
+                    document.getElementById('difficulty').value = preferences.difficulty;
+                }
+                
+                if (preferences.learningTime) {
+                    document.getElementById('learningTime').value = preferences.learningTime;
+                }
+                
+                if (preferences.weeklyGoal) {
+                    document.getElementById('weeklyGoal').value = preferences.weeklyGoal;
+                }
+                
+                if (preferences.emailNotifications !== undefined) {
+                    document.getElementById('emailNotifications').checked = preferences.emailNotifications;
+                }
+                
+                if (preferences.newsletter !== undefined) {
+                    document.getElementById('newsletter').checked = preferences.newsletter;
+                }
+            }
+
+            function showNotification(message, type) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+                notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+                notification.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 5000);
+            }
+        });
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('learnhub_user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

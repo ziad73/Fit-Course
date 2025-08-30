@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Viewer - LearnHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .lesson-viewer-container {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .lesson-header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .lesson-breadcrumb {
+            font-size: 0.9rem;
+        }
+        
+        .lesson-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+        
+        .lesson-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .content-area {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .video-container {
+            position: relative;
+            background: #000;
+            aspect-ratio: 16/9;
+        }
+        
+        .video-player {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .video-placeholder {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .slide-container {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .slide-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .slide-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        
+        .quiz-container {
+            padding: 2rem;
+        }
+        
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .option-item {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option-item:hover {
+            border-color: var(--primary-color);
+            background: #f8f9ff;
+        }
+        
+        .option-item.selected {
+            border-color: var(--primary-color);
+            background: #e3f2fd;
+        }
+        
+        .option-item.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .option-item.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+        
+        .lesson-sidebar {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            position: sticky;
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+        
+        .section-group {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 1rem;
+        }
+        
+        .section-group:last-child {
+            border-bottom: none;
+        }
+        
+        .section-header {
+            margin-bottom: 1rem;
+        }
+        
+        .section-header h6 {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+        
+        .lesson-list {
+            margin-bottom: 0;
+        }
+        
+        .lesson-item {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .lesson-item:hover {
+            background: #f8f9fa;
+            border-color: var(--primary-color);
+        }
+        
+        .lesson-item.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .lesson-item.completed {
+            background: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+        
+        .lesson-item.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #f8f9fa;
+        }
+        
+        .lesson-item.locked:hover {
+            background: #f8f9fa;
+            border-color: transparent;
+        }
+        
+        .lesson-type-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        
+        .video-icon { background: #dc3545; }
+        .slide-icon { background: #28a745; }
+        .quiz-icon { background: #ffc107; }
+        
+        .notes-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .notes-textarea {
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 1rem;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .notes-textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+        
+        .completion-actions {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .btn-complete {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        
+        .btn-complete:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+        
+        .btn-next {
+            background: #28a745;
+            border-color: #28a745;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        
+        .btn-next:hover {
+            background: #1e7e34;
+            border-color: #1e7e34;
+        }
+        
+        @media (max-width: 768px) {
+            .lesson-sidebar {
+                position: static;
+                margin-top: 2rem;
+            }
+            
+            .lesson-header {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="fas fa-graduation-cap me-2"></i>LearnHub
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="courses.html">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-secondary me-2" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="dropdown" id="userMenu">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>Sign In
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="login.html">Sign In</a></li>
+                            <li><a class="dropdown-item" href="signup.html">Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="lesson-viewer-container">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Main Content Area -->
+                <div class="col-lg-9">
+                    <!-- Lesson Header -->
+                    <div class="lesson-header">
+                        <div class="container-fluid">
+                            <nav aria-label="breadcrumb" class="lesson-breadcrumb">
+                                <ol class="breadcrumb mb-1">
+                                    <li class="breadcrumb-item"><a href="courses.html">Courses</a></li>
+                                    <li class="breadcrumb-item"><a href="course-detail-enhanced.html">Web Development</a></li>
+                                    <li class="breadcrumb-item active">Lesson 1: Welcome to the Course</li>
+                                </ol>
+                            </nav>
+                            
+                            <h1 class="lesson-title">Welcome to the Course</h1>
+                            
+                            <div class="lesson-progress">
+                                <span class="text-muted">Progress: 15%</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 15%"></div>
+                                </div>
+                                <span class="text-muted">3 of 20 lessons</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="container-fluid">
+                        <!-- Video Content -->
+                        <div class="content-area" id="videoContent">
+                            <div class="video-container">
+                                <div class="video-player">
+                                    <div class="video-placeholder">
+                                        <i class="fas fa-play-circle fa-4x mb-3"></i>
+                                        <h4>Welcome to the Course</h4>
+                                        <p class="text-muted">Click play to start learning</p>
+                                        <button class="btn btn-primary btn-lg" onclick="playVideo()">
+                                            <i class="fas fa-play me-2"></i>Play Video
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="video-controls">
+                                    <button class="control-btn" onclick="togglePlayPause()">
+                                        <i class="fas fa-play" id="playPauseIcon"></i>
+                                    </button>
+                                    <div class="flex-grow-1">
+                                        <input type="range" class="form-range" min="0" max="100" value="0" id="videoProgress">
+                                    </div>
+                                    <span class="text-white" id="videoTime">0:00 / 5:30</span>
+                                    <button class="control-btn" onclick="toggleFullscreen()">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide Content -->
+                        <div class="content-area" id="slideContent" style="display: none;">
+                            <div class="slide-container">
+                                <div class="slide-content">
+                                    <h2>Course Overview & Setup</h2>
+                                    <div class="slide-image mb-4">
+                                        <img src="https://via.placeholder.com/800x450/2563eb/ffffff?text=Course+Overview+Slide" 
+                                             alt="Course Overview" class="img-fluid rounded">
+                                    </div>
+                                    
+                                    <div class="slide-text text-start">
+                                        <h4>What You'll Learn</h4>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check text-success me-2"></i>HTML5, CSS3, and JavaScript fundamentals</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Modern web development practices</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Responsive design principles</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Real-world project building</li>
+                                        </ul>
+                                        
+                                        <h4 class="mt-4">Course Structure</h4>
+                                        <p>This course is organized into 15 comprehensive sections, each building upon the previous knowledge. You'll start with the basics and gradually advance to complex topics.</p>
+                                    </div>
+                                    
+                                    <div class="slide-navigation">
+                                        <button class="btn btn-outline-secondary" onclick="previousSlide()">
+                                            <i class="fas fa-chevron-left me-2"></i>Previous
+                                        </button>
+                                        <span class="text-muted">Slide 1 of 5</span>
+                                        <button class="btn btn-primary" onclick="nextSlide()">
+                                            Next<i class="fas fa-chevron-right ms-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Content -->
+                        <div class="content-area" id="quizContent" style="display: none;">
+                            <div class="quiz-container">
+                                <h2 class="mb-4">Section 1 Quiz</h2>
+                                <p class="text-muted mb-4">Test your knowledge of the introduction section. You need to answer at least 8 out of 10 questions correctly to pass.</p>
+                                
+                                <div class="question-card" id="question1">
+                                    <div class="question-text">1. What is the primary purpose of HTML in web development?</div>
+                                    <div class="option-item" onclick="selectOption(this, 'question1')">
+                                        <span class="option-letter">A.</span> To style web pages
+                                    </div>
+                                    <div class="option-item" onclick="selectOption(this, 'question1')">
+                                        <span class="option-letter">B.</span> To structure and organize web content
+                                    </div>
+                                    <div class="option-item" onclick="selectOption(this, 'question1')">
+                                        <span class="option-letter">C.</span> To add interactivity to web pages
+                                    </div>
+                                    <div class="option-item" onclick="selectOption(this, 'question1')">
+                                        <span class="option-letter">D.</span> To optimize website performance
+                                    </div>
+                                </div>
+                                
+                                <div class="question-card" id="question2">
+                                    <div class="question-text">2. Which of the following is NOT a valid HTML tag?</div>
+                                    <div class="option-item" onclick="selectOption(this, 'question2')">
+                                        <span class="option-letter">A.</span> &lt;div&gt;
+                                    </div>
+                                    <div class="option-item" onclick="selectOption(this, 'question2')">
+                                        <span class="option-letter">B.</span> &lt;span&gt;
+                                    </div>
+                                    <div class="option-item" onclick="selectOption(this, 'question2')">
+                                        <span class="option-letter">C.</span> &lt;section&gt;
+                                    </div>
+                                    <div class="option-item" onclick="selectOption(this, 'question2')">
+                                        <span class="option-letter">D.</span> &lt;paragraph&gt;
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-primary btn-lg" onclick="submitQuiz()">
+                                        <i class="fas fa-paper-plane me-2"></i>Submit Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes Section -->
+                        <div class="notes-section">
+                            <h4><i class="fas fa-sticky-note me-2"></i>My Notes</h4>
+                            <textarea class="form-control notes-textarea" 
+                                      placeholder="Take notes while learning... (Your notes are automatically saved)"></textarea>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted">Notes are automatically saved</small>
+                                <button class="btn btn-outline-primary btn-sm" onclick="exportNotes()">
+                                    <i class="fas fa-download me-1"></i>Export Notes
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Completion Actions -->
+                        <div class="completion-actions">
+                            <h4>Mark this lesson as complete?</h4>
+                            <p class="text-muted">Completing lessons helps track your progress and unlocks the next content.</p>
+                            
+                            <div class="d-flex justify-content-center gap-3">
+                                <button class="btn btn-complete" onclick="markComplete()">
+                                    <i class="fas fa-check me-2"></i>Mark Complete
+                                </button>
+                                <button class="btn btn-next" onclick="nextLesson()">
+                                    <i class="fas fa-arrow-right me-2"></i>Next Lesson
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Content Navigation Sidebar -->
+                <div class="col-lg-3">
+                    <div class="lesson-sidebar">
+                        <h5 class="mb-3">Course Content</h5>
+                        
+                        <!-- Section 1: Introduction -->
+                        <div class="section-group mb-4">
+                            <div class="section-header">
+                                <h6 class="mb-2 fw-bold text-primary">
+                                    <i class="fas fa-play-circle me-2"></i>Section 1: Introduction to Web Development
+                                </h6>
+                                <small class="text-muted">4 lectures • 45 min</small>
+                            </div>
+                            
+                            <div class="lesson-list">
+                                <div class="lesson-item" onclick="loadLessonContent(1)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon video-icon">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">Welcome to the Course</div>
+                                            <div class="text-muted small">5:30</div>
+                                        </div>
+                                        <i class="fas fa-check text-success"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item" onclick="loadLessonContent(2)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon slide-icon">
+                                            <i class="fas fa-file-alt"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">Course Overview & Setup</div>
+                                            <div class="text-muted small">Slides</div>
+                                        </div>
+                                        <i class="fas fa-check text-success"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item" onclick="loadLessonContent(3)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon video-icon">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">Setting Up Your Development Environment</div>
+                                            <div class="text-muted small">15:45</div>
+                                        </div>
+                                        <i class="fas fa-play text-primary"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item" onclick="loadLessonContent(4)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon quiz-icon">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">Section 1 Quiz</div>
+                                            <div class="text-muted small">10 questions</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section 2: HTML5 Fundamentals -->
+                        <div class="section-group mb-4">
+                            <div class="section-header">
+                                <h6 class="mb-2 fw-bold text-primary">
+                                    <i class="fas fa-code me-2"></i>Section 2: HTML5 Fundamentals
+                                </h6>
+                                <small class="text-muted">12 lectures • 3h 15m</small>
+                            </div>
+                            
+                            <div class="lesson-list">
+                                <div class="lesson-item" onclick="loadLessonContent(5)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon video-icon">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">HTML Basics and Structure</div>
+                                            <div class="text-muted small">18:20</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item" onclick="loadLessonContent(6)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon slide-icon">
+                                            <i class="fas fa-file-alt"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">HTML Elements Reference</div>
+                                            <div class="text-muted small">Slides</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item" onclick="loadLessonContent(7)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon video-icon">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">Building Your First Webpage</div>
+                                            <div class="text-muted small">25:10</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item" onclick="loadLessonContent(8)">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon quiz-icon">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">HTML Fundamentals Quiz</div>
+                                            <div class="text-muted small">15 questions</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section 3: CSS3 Styling -->
+                        <div class="section-group mb-4">
+                            <div class="section-header">
+                                <h6 class="mb-2 fw-bold text-primary">
+                                    <i class="fas fa-palette me-2"></i>Section 3: CSS3 Styling
+                                </h6>
+                                <small class="text-muted">18 lectures • 4h 30m</small>
+                            </div>
+                            
+                            <div class="lesson-list">
+                                <div class="lesson-item locked">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon video-icon">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">CSS Introduction and Selectors</div>
+                                            <div class="text-muted small">22:15</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item locked">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon slide-icon">
+                                            <i class="fas fa-file-alt"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">CSS Properties Cheat Sheet</div>
+                                            <div class="text-muted small">Slides</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item locked">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon video-icon">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">Flexbox Layout System</div>
+                                            <div class="text-muted small">35:20</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item locked">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon video-icon">
+                                            <i class="fas fa-play"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">CSS Grid Layout</div>
+                                            <div class="text-muted small">28:45</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-item locked">
+                                    <div class="d-flex align-items-center">
+                                        <div class="lesson-type-icon quiz-icon">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold small">CSS Layout Quiz</div>
+                                            <div class="text-muted small">12 questions</div>
+                                        </div>
+                                        <i class="fas fa-lock text-muted"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Show More Sections Button -->
+                        <div class="text-center">
+                            <button class="btn btn-outline-primary btn-sm" onclick="toggleMoreSections()">
+                                <i class="fas fa-chevron-down me-1"></i>Show More Sections
+                            </button>
+                        </div>
+                        
+                        <hr>
+                        
+                        <!-- Quick Actions -->
+                        <div class="text-center">
+                            <button class="btn btn-outline-secondary btn-sm me-2" onclick="toggleContentType()">
+                                <i class="fas fa-eye me-1"></i>Toggle View
+                            </button>
+                            <a href="course-detail-enhanced.html" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Course
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Lesson viewer specific functionality
+        let currentLesson = 1;
+        let currentContentType = 'video'; // 'video', 'slide', 'quiz'
+        let isVideoPlaying = false;
+        let currentSlide = 1;
+        let totalSlides = 5;
+        let quizAnswers = {};
+        
+        // Sample lesson data
+        const lessons = [
+            {
+                id: 1,
+                title: "Welcome to the Course",
+                type: "video",
+                duration: "5:30",
+                completed: true,
+                locked: false,
+                section: 1
+            },
+            {
+                id: 2,
+                title: "Course Overview & Setup",
+                type: "slide",
+                duration: "Slides",
+                completed: true,
+                locked: false,
+                section: 1
+            },
+            {
+                id: 3,
+                title: "Setting Up Your Development Environment",
+                type: "video",
+                duration: "15:45",
+                completed: false,
+                locked: false,
+                section: 1
+            },
+            {
+                id: 4,
+                title: "Section 1 Quiz",
+                type: "quiz",
+                duration: "10 questions",
+                completed: false,
+                locked: false,
+                section: 1
+            },
+            {
+                id: 5,
+                title: "HTML Basics and Structure",
+                type: "video",
+                duration: "18:20",
+                completed: false,
+                locked: true,
+                section: 2
+            },
+            {
+                id: 6,
+                title: "HTML Elements Reference",
+                type: "slide",
+                duration: "Slides",
+                completed: false,
+                locked: true,
+                section: 2
+            },
+            {
+                id: 7,
+                title: "Building Your First Webpage",
+                type: "video",
+                duration: "25:10",
+                completed: false,
+                locked: true,
+                section: 2
+            },
+            {
+                id: 8,
+                title: "HTML Fundamentals Quiz",
+                type: "quiz",
+                duration: "15 questions",
+                completed: false,
+                locked: true,
+                section: 2
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const notesTextarea = document.querySelector('.notes-textarea');
+
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('learnhub_user'));
+            if (!currentUser) {
+                alert('Please sign in to access lessons.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Initialize the lesson viewer
+            initializeLessonViewer();
+            loadLessonContent(currentLesson);
+
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('learnhub_theme', newTheme);
+                
+                const icon = this.querySelector('i');
+                icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            });
+
+            // Load saved theme
+            const savedTheme = localStorage.getItem('learnhub_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const icon = themeToggle.querySelector('i');
+            icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+            // Auto-save notes
+            notesTextarea.addEventListener('input', function() {
+                saveNotes();
+            });
+
+            // Load saved notes
+            loadNotes();
+
+            // Update user menu
+            updateUserMenu();
+        });
+
+        function initializeLessonViewer() {
+            // Set up video progress bar
+            const videoProgress = document.getElementById('videoProgress');
+            if (videoProgress) {
+                videoProgress.addEventListener('input', function() {
+                    updateVideoTime(this.value);
+                });
+            }
+        }
+
+        function loadLessonContent(lessonId) {
+            const lesson = lessons.find(l => l.id === lessonId);
+            if (!lesson) return;
+
+            currentLesson = lessonId;
+            currentContentType = lesson.type;
+            
+            // Hide all content types
+            document.getElementById('videoContent').style.display = 'none';
+            document.getElementById('slideContent').style.display = 'none';
+            document.getElementById('quizContent').style.display = 'none';
+            
+            // Show appropriate content type
+            switch (lesson.type) {
+                case 'video':
+                    document.getElementById('videoContent').style.display = 'block';
+                    loadVideoContent(lesson);
+                    break;
+                case 'slide':
+                    document.getElementById('slideContent').style.display = 'block';
+                    loadSlideContent(lesson);
+                    break;
+                case 'quiz':
+                    document.getElementById('quizContent').style.display = 'block';
+                    loadQuizContent(lesson);
+                    break;
+            }
+            
+            // Update lesson list active state
+            updateLessonListActive();
+            
+            // Update breadcrumb
+            updateBreadcrumb(lesson);
+            
+            // Update progress
+                        updateProgress();
+        }
+
+        function loadVideoContent(lesson) {
+            // Reset video state
+            isVideoPlaying = false;
+            document.getElementById('playPauseIcon').className = 'fas fa-play';
+            document.getElementById('videoProgress').value = 0;
+            document.getElementById('videoTime').textContent = `0:00 / ${lesson.duration}`;
+        }
+
+        function loadSlideContent(lesson) {
+            currentSlide = 1;
+            // Slide content is already in HTML
+        }
+
+        function loadQuizContent(lesson) {
+            // Reset quiz state
+            quizAnswers = {};
+            // Remove previous selections
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected', 'correct', 'incorrect');
+            });
+        }
+
+        // renderLessonList function removed - using static HTML structure instead
+
+        function updateLessonListActive() {
+            // Remove active class from all lesson items
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to current lesson
+            const lessonItems = document.querySelectorAll('.lesson-item');
+            lessonItems.forEach((item, index) => {
+                if (index === currentLesson - 1) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function updateBreadcrumb(lesson) {
+            const breadcrumb = document.querySelector('.lesson-title');
+            if (breadcrumb) {
+                breadcrumb.textContent = lesson.title;
+            }
+        }
+
+        function updateProgress() {
+            const completedLessons = lessons.filter(l => l.completed).length;
+            const totalLessons = lessons.length;
+            const progressPercentage = Math.round((completedLessons / totalLessons) * 100);
+            
+            document.querySelector('.progress-fill').style.width = `${progressPercentage}%`;
+            document.querySelector('.lesson-progress span:first-child').textContent = `Progress: ${progressPercentage}%`;
+            document.querySelector('.lesson-progress span:last-child').textContent = `${completedLessons} of ${totalLessons} lessons`;
+        }
+
+        // Video controls
+        function playVideo() {
+            isVideoPlaying = true;
+            document.getElementById('playPauseIcon').className = 'fas fa-pause';
+            // Simulate video progress
+            simulateVideoProgress();
+        }
+
+        function togglePlayPause() {
+            if (isVideoPlaying) {
+                isVideoPlaying = false;
+                document.getElementById('playPauseIcon').className = 'fas fa-play';
+            } else {
+                isVideoPlaying = true;
+                document.getElementById('playPauseIcon').className = 'fas fa-pause';
+                simulateVideoProgress();
+            }
+        }
+
+        function simulateVideoProgress() {
+            if (!isVideoPlaying) return;
+            
+            const progressBar = document.getElementById('videoProgress');
+            const currentValue = parseInt(progressBar.value);
+            
+            if (currentValue < 100) {
+                progressBar.value = currentValue + 1;
+                updateVideoTime(currentValue + 1);
+                setTimeout(simulateVideoProgress, 100);
+            } else {
+                isVideoPlaying = false;
+                document.getElementById('playPauseIcon').className = 'fas fa-play';
+            }
+        }
+
+        function updateVideoTime(progress) {
+            const totalSeconds = 330; // 5:30 in seconds
+            const currentSeconds = Math.round((progress / 100) * totalSeconds);
+            const currentTime = formatTime(currentSeconds);
+            const totalTime = formatTime(totalSeconds);
+            
+            document.getElementById('videoTime').textContent = `${currentTime} / ${totalTime}`;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function toggleFullscreen() {
+            const videoContainer = document.querySelector('.video-container');
+            if (videoContainer.requestFullscreen) {
+                videoContainer.requestFullscreen();
+            }
+        }
+
+        // Slide controls
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlideNavigation();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlideNavigation();
+            }
+        }
+
+        function updateSlideNavigation() {
+            document.querySelector('.slide-navigation span').textContent = `Slide ${currentSlide} of ${totalSlides}`;
+        }
+
+        // Quiz controls
+        function selectOption(optionElement, questionId) {
+            // Remove previous selection from this question
+            const questionCard = document.getElementById(questionId);
+            questionCard.querySelectorAll('.option-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Select new option
+            optionElement.classList.add('selected');
+            quizAnswers[questionId] = optionElement.textContent.trim();
+        }
+
+        function submitQuiz() {
+            const answeredQuestions = Object.keys(quizAnswers).length;
+            if (answeredQuestions < 2) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+            
+            // Simulate quiz grading
+            const correctAnswers = {
+                'question1': 'B. To structure and organize web content',
+                'question2': 'D. <paragraph>'
+            };
+            
+            let score = 0;
+            Object.keys(quizAnswers).forEach(questionId => {
+                if (quizAnswers[questionId] === correctAnswers[questionId]) {
+                    score++;
+                    document.getElementById(questionId).querySelectorAll('.option-item').forEach(item => {
+                        if (item.textContent.trim() === correctAnswers[questionId]) {
+                            item.classList.add('correct');
+                        }
+                    });
+                } else {
+                    document.getElementById(questionId).querySelectorAll('.option-item').forEach(item => {
+                        if (item.textContent.trim() === quizAnswers[questionId]) {
+                            item.classList.add('incorrect');
+                        }
+                        if (item.textContent.trim() === correctAnswers[questionId]) {
+                            item.classList.add('correct');
+                        }
+                    });
+                }
+            });
+            
+            const percentage = (score / 2) * 100;
+            alert(`Quiz completed! Your score: ${score}/2 (${percentage}%)`);
+            
+            if (percentage >= 80) {
+                markLessonComplete();
+            }
+        }
+
+        // Content type toggle
+        function toggleContentType() {
+            const contentTypes = ['video', 'slide', 'quiz'];
+            const currentIndex = contentTypes.indexOf(currentContentType);
+            const nextIndex = (currentIndex + 1) % contentTypes.length;
+            currentContentType = contentTypes[nextIndex];
+            
+            loadLessonContent(currentLesson);
+        }
+        
+        // Toggle more sections
+        function toggleMoreSections() {
+            const moreSectionsBtn = document.querySelector('button[onclick="toggleMoreSections()"]');
+            const icon = moreSectionsBtn.querySelector('i');
+            
+            if (icon.classList.contains('fa-chevron-down')) {
+                // Show more sections
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+                moreSectionsBtn.innerHTML = '<i class="fas fa-chevron-up me-1"></i>Show Less Sections';
+                
+                // Add more sections here
+                const additionalSections = `
+                    <div class="section-group mb-4">
+                        <div class="section-header">
+                            <h6 class="mb-2 fw-bold text-primary">
+                                <i class="fas fa-code me-2"></i>Section 4: JavaScript Fundamentals
+                            </h6>
+                            <small class="text-muted">8 lectures • 2h 15m</small>
+                        </div>
+                        
+                        <div class="lesson-list">
+                            <div class="lesson-item locked">
+                                <div class="d-flex align-items-center">
+                                    <div class="lesson-type-icon video-icon">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold small">JavaScript Basics</div>
+                                        <div class="text-muted small">25:30</div>
+                                    </div>
+                                    <i class="fas fa-lock text-muted"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="lesson-item locked">
+                                <div class="d-flex align-items-center">
+                                    <div class="lesson-type-icon video-icon">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold small">ES6+ Features</div>
+                                        <div class="text-muted small">32:15</div>
+                                    </div>
+                                    <i class="fas fa-lock text-muted"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-group mb-4">
+                        <div class="section-header">
+                            <h6 class="mb-2 fw-bold text-primary">
+                                <i class="fab fa-react me-2"></i>Section 5: React.js Basics
+                            </h6>
+                            <small class="text-muted">10 lectures • 3h 20m</small>
+                        </div>
+                        
+                        <div class="lesson-list">
+                            <div class="lesson-item locked">
+                                <div class="d-flex align-items-center">
+                                    <div class="lesson-type-icon video-icon">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold small">React Introduction</div>
+                                        <div class="text-muted small">28:45</div>
+                                    </div>
+                                    <i class="fas fa-lock text-muted"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="lesson-item locked">
+                                <div class="d-flex align-items-center">
+                                    <div class="lesson-type-icon video-icon">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold small">Components & Props</div>
+                                        <div class="text-muted small">35:20</div>
+                                    </div>
+                                    <i class="fas fa-lock text-muted"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Insert additional sections before the show more button
+                const showMoreBtn = document.querySelector('button[onclick="toggleMoreSections()"]').parentElement;
+                showMoreBtn.insertAdjacentHTML('beforebegin', additionalSections);
+                
+            } else {
+                // Hide more sections
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+                moreSectionsBtn.innerHTML = '<i class="fas fa-chevron-down me-1"></i>Show More Sections';
+                
+                // Remove additional sections
+                const additionalSections = document.querySelectorAll('.section-group:nth-child(n+4)');
+                additionalSections.forEach(section => {
+                    if (section.querySelector('h6').textContent.includes('JavaScript Fundamentals') || 
+                        section.querySelector('h6').textContent.includes('React.js Basics')) {
+                        section.remove();
+                    }
+                });
+            }
+        }
+
+        // Notes functionality
+        function saveNotes() {
+            const notes = document.querySelector('.notes-textarea').value;
+            localStorage.setItem(`learnhub_notes_lesson_${currentLesson}`, notes);
+        }
+
+        function loadNotes() {
+            const savedNotes = localStorage.getItem(`learnhub_notes_lesson_${currentLesson}`);
+            if (savedNotes) {
+                document.querySelector('.notes-textarea').value = savedNotes;
+            }
+        }
+
+        function exportNotes() {
+            const notes = document.querySelector('.notes-textarea').value;
+            if (!notes.trim()) {
+                alert('No notes to export.');
+                return;
+            }
+            
+            const blob = new Blob([notes], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lesson-${currentLesson}-notes.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Lesson completion
+        function markComplete() {
+            const lesson = lessons.find(l => l.id === currentLesson);
+            if (lesson && !lesson.completed) {
+                lesson.completed = true;
+                localStorage.setItem('learnhub_lesson_progress', JSON.stringify(lessons));
+                updateProgress();
+                
+                // Update the visual state of the completed lesson
+                const lessonItems = document.querySelectorAll('.lesson-item');
+                const currentItem = lessonItems[currentLesson - 1];
+                if (currentItem) {
+                    currentItem.classList.add('completed');
+                    // Replace the play icon with check icon
+                    const icon = currentItem.querySelector('.fas.fa-play, .fas.fa-file-alt, .fas.fa-question-circle');
+                    if (icon) {
+                        icon.parentElement.innerHTML = '<i class="fas fa-check text-success"></i>';
+                    }
+                }
+                
+                alert('Lesson marked as complete!');
+            }
+        }
+
+        function nextLesson() {
+            const nextLesson = lessons.find(l => l.id === currentLesson + 1);
+            if (nextLesson && !nextLesson.locked) {
+                loadLessonContent(nextLesson.id);
+            } else {
+                alert('Next lesson is not available yet.');
+            }
+        }
+
+        function markLessonComplete() {
+            markComplete();
+        }
+
+        // User menu update
+        function updateUserMenu() {
+            const currentUser = JSON.parse(localStorage.getItem('learnhub_user'));
+            if (currentUser) {
+                const userMenu = document.getElementById('userMenu');
+                userMenu.innerHTML = `
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>${currentUser.name}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">Sign Out</a></li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        // Logout function
+        window.logout = function() {
+            localStorage.removeItem('learnhub_user');
+            window.location.href = 'login.html';
+        };
+    </script>
+</body>
+</html>

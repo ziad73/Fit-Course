@@ -1,0 +1,48 @@
+# Build results
+**/[Bb]in/
+**/[Oo]bj/
+**/[Ll]og/
+.github/
+**/out/
+*.exe
+*.dll
+*.app
+*.so
+*.dylib
+
+# VS Code
+**/.vscode/
+**/.vs/
+*.code-workspace
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+
+# Entity Framework
+**/Migrations/
+
+# Secrets
+secrets.json
+
+# Logs
+*.log
+
+# Coverage / Testing
+*.coverage
+*.coveragexml
+TestResult*/
+Coverage*/
+
+# Rider / JetBrains
+**/.idea/
+*.iml
+
+ERD.txt
