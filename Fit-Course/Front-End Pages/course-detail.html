@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Detail - LearnHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="fas fa-graduation-cap me-2"></i>LearnHub
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-category="programming">Programming</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="design">Design</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="business">Business</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="marketing">Marketing</a></li>
+                            <li><a class="dropdown-item" href="#" data-category="lifestyle">Lifestyle</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="courses.html">All Courses</a>
+                    </li>
+                </ul>
+                
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search courses..." id="searchInput">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-secondary me-2" id="darkModeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="dropdown" id="userMenu">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>Sign In
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="login.html">Sign In</a></li>
+                            <li><a class="dropdown-item" href="signup.html">Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Hero Section -->
+    <section class="course-hero mt-5">
+        <div class="container">
+            <!-- Course content will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Course Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Course Description -->
+                    <div class="mb-5">
+                        <h3>What you'll learn</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Build real-world projects</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Master core concepts</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Get hands-on experience</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Learn best practices</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Access to resources</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Certificate of completion</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Lifetime access</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Mobile and TV access</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Requirements -->
+                    <div class="mb-5">
+                        <h3>Requirements</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-info-circle text-info me-2"></i>Basic computer knowledge</li>
+                            <li class="mb-2"><i class="fas fa-info-circle text-info me-2"></i>No prior experience needed</li>
+                            <li class="mb-2"><i class="fas fa-info-circle text-info me-2"></i>Willingness to learn</li>
+                        </ul>
+                    </div>
+
+                    <!-- Course Description -->
+                    <div class="mb-5">
+                        <h3>Description</h3>
+                        <p class="lead">This comprehensive course will take you from beginner to advanced level, covering all the essential concepts and practical applications. You'll learn through hands-on projects and real-world examples.</p>
+                        <p>Throughout the course, you'll build multiple projects that will help you understand the concepts better and give you a portfolio to showcase your skills. The course is designed to be practical and engaging, with plenty of exercises and challenges.</p>
+                    </div>
+
+                    <!-- Course Syllabus -->
+                    <div class="mb-5" id="courseSyllabus">
+                        <!-- Syllabus will be loaded here -->
+                    </div>
+
+                    <!-- Instructor -->
+                    <div class="mb-5">
+                        <h3>Instructor</h3>
+                        <div class="d-flex align-items-center">
+                            <img src="https://ui-avatars.com/api/?name=Instructor&background=random" 
+                                 alt="Instructor" class="rounded-circle me-3" width="80" height="80">
+                            <div>
+                                <h5 class="mb-1">Course Instructor</h5>
+                                <p class="text-muted mb-2">Expert in the field with years of experience</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <span class="ms-1">4.8</span>
+                                    </div>
+                                    <div class="me-3">
+                                        <i class="fas fa-users text-info"></i>
+                                        <span class="ms-1">50,000+ students</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-play-circle text-success"></i>
+                                        <span class="ms-1">15 courses</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="mb-5">
+                        <h3>Student Reviews</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" 
+                                                     alt="Student" class="rounded-circle me-2" width="40" height="40">
+                                                <div>
+                                                    <h6 class="mb-0">John Doe</h6>
+                                                    <small class="text-muted">2 days ago</small>
+                                                </div>
+                                            </div>
+                                            <div class="text-warning">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <p class="mb-0">Excellent course! Very well structured and easy to follow.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=random" 
+                                                     alt="Student" class="rounded-circle me-2" width="40" height="40">
+                                                <div>
+                                                    <h6 class="mb-0">Jane Smith</h6>
+                                                    <small class="text-muted">1 week ago</small>
+                                                </div>
+                                            </div>
+                                            <div class="text-warning">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <p class="mb-0">Great content and practical examples. Highly recommended!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- Course Preview Video -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Course Preview</h5>
+                            <div class="ratio ratio-16x9 mb-3">
+                                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                                        title="Course Preview" frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen></iframe>
+                            </div>
+                            <p class="text-muted small">Watch this preview to get a taste of what you'll learn in this course.</p>
+                        </div>
+                    </div>
+
+                    <!-- Course Features -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">This course includes:</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-video text-primary me-2"></i>44 hours on-demand video</li>
+                                <li class="mb-2"><i class="fas fa-file-alt text-primary me-2"></i>490 downloadable resources</li>
+                                <li class="mb-2"><i class="fas fa-infinity text-primary me-2"></i>Full lifetime access</li>
+                                <li class="mb-2"><i class="fas fa-mobile-alt text-primary me-2"></i>Access on mobile and TV</li>
+                                <li class="mb-2"><i class="fas fa-certificate text-primary me-2"></i>Certificate of completion</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Related Courses -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Students also bought</h5>
+                            <div class="mb-3">
+                                <div class="d-flex">
+                                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                         alt="Course" class="rounded me-3" width="60" height="40" style="object-fit: cover;">
+                                    <div>
+                                        <h6 class="mb-1">Web Development</h6>
+                                        <small class="text-muted">by Dr. Angela Yu</small>
+                                        <div class="text-warning">
+                                            <i class="fas fa-star fa-xs"></i>
+                                            <span class="ms-1">4.8</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex">
+                                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                         alt="Course" class="rounded me-3" width="60" height="40" style="object-fit: cover;">
+                                    <div>
+                                        <h6 class="mb-1">UI/UX Design</h6>
+                                        <small class="text-muted">by Sarah Johnson</small>
+                                        <div class="text-warning">
+                                            <i class="fas fa-star fa-xs"></i>
+                                            <span class="ms-1">4.7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">LearnHub</h5>
+                    <p>Empowering learners worldwide with quality education and skills development.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white-50">Home</a></li>
+                        <li><a href="courses.html" class="text-white-50">Courses</a></li>
+                        <li><a href="#" class="text-white-50">About Us</a></li>
+                        <li><a href="#" class="text-white-50">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h6 class="mb-3">Categories</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50">Programming</a></li>
+                        <li><a href="#" class="text-white-50">Design</a></li>
+                        <li><a href="#" class="text-white-50">Business</a></li>
+                        <li><a href="#" class="text-white-50">Marketing</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h6 class="mb-3">Newsletter</h6>
+                    <p>Subscribe to get special offers and updates.</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 LearnHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+
