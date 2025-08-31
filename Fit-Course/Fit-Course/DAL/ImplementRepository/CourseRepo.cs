@@ -37,14 +37,15 @@ namespace DAL.ImplementRepository
             return entity.Id;
         }
 
-        public async Task Delete(Course entity)
+        public async Task<bool> Delete(Course entity)
         {
             if (entity == null)
             {
-                return;
+                return false;
             }
             _context.Remove(entity);
-            await _context.SaveChangesAsync();
+            int changes = await _context.SaveChangesAsync();
+            return changes > 0;
         }
 
         public async Task<List<Course>> GetAll()
@@ -65,16 +66,13 @@ namespace DAL.ImplementRepository
                 .ToListAsync();
         }
 
-        public async Task UpdateAsync(Course entity)
-        {
-            _context.Update(entity);
-            await _context.SaveChangesAsync();
-        }
+        
 
-        public async Task Update(Course entity)
+        public async Task<bool> Update(Course entity)
         {
             _context.Update(entity);
-            await _context.SaveChangesAsync();
+            int changes = await _context.SaveChangesAsync();
+            return changes > 0;
         }
     }
 }

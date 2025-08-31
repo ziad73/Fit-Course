@@ -37,14 +37,15 @@ namespace DAL.ImplementRepository
             return entity.Id;
         }
 
-        public async Task Delete(Slide entity)
+        public async Task<bool> Delete(Slide entity)
         {
             if (entity == null)
             {
-                return;
+                return false;
             }
             _context.Remove(entity);
-            await _context.SaveChangesAsync();
+            int changes = await _context.SaveChangesAsync();
+            return changes > 0;
         }
 
         public async Task<List<Slide>> GetAll()
@@ -63,16 +64,13 @@ namespace DAL.ImplementRepository
                 .ToListAsync();
         }
 
-        public async Task UpdateAsync(Slide entity)
-        {
-            _context.Update(entity);
-            await _context.SaveChangesAsync();
-        }
+      
 
-        public async Task Update(Slide entity)
+        public async Task <bool>Update(Slide entity)
         {
             _context.Update(entity);
-            await _context.SaveChangesAsync();
+            int changes = await _context.SaveChangesAsync();
+            return changes > 0;
         }
     }
 }

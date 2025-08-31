@@ -1,5 +1,4 @@
-﻿using DAL.Entities.video;
-
+﻿using DAL.Entities;
 using DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,24 +9,20 @@ using System.Threading.Tasks;
 
 namespace DAL.ImplementRepository
 {
-    public class VideoRepo : IRepository<Video>
+    public class PaymentRepo : IRepository<Payment>
     {
         private readonly FitCourseDb _context;
-        public VideoRepo(FitCourseDb context)
+        public PaymentRepo(FitCourseDb context)
         {
             _context = context;
         }
-        public async Task<Video> GetByID(int id)
+        public async Task<Payment> GetByID(int id)
         {
-            return await _context.Video
-                
-                .Include(v=>v.Section)
-                
-                .Where(r => r.IsDeleted == false)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Payment
+                .FirstOrDefaultAsync(c => c.PaymentID == id);
         }
 
-        public async Task<int?> Create(Video entity)
+        public async Task<int?> Create(Payment entity)
         {
             if (entity == null)
             {
@@ -36,10 +31,10 @@ namespace DAL.ImplementRepository
 
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return entity.Id;
+            return entity.PaymentID;
         }
 
-        public async Task<bool> Delete(Video entity)
+        public async Task<bool> Delete(Payment entity)
         {
             if (entity == null)
             {
@@ -50,32 +45,26 @@ namespace DAL.ImplementRepository
             return changes > 0;
         }
 
-        public async Task<List<Video>> GetAll()
+        public async Task<List<Payment>> GetAll()
         {
-            return await _context.Video
-                         .Where(r => r.IsDeleted == false)
-
-                         .Include(v => v.Section)
-
-
+            return await _context.Payment
+                        
                          .ToListAsync();
         }
-        public async Task<List<Video>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Video, bool>> filter)
+        public async Task<List<Payment>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Payment, bool>> filter)
         {
-            return await _context.Video
+            return await _context.Payment
                 .Where(filter)
-                .Include(v => v.Section)
-
                 .ToListAsync();
         }
 
-        public async Task<bool> Update(Video entity)
+      
+
+        public async Task<bool> Update(Payment entity)
         {
             _context.Update(entity);
             int changes = await _context.SaveChangesAsync();
             return changes > 0;
         }
-
-        
     }
 }

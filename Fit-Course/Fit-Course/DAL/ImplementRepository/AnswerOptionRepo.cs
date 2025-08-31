@@ -1,4 +1,4 @@
-﻿using DAL.Entities.video;
+﻿using DAL.Entities.answerOption;
 
 using DAL.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -10,24 +10,22 @@ using System.Threading.Tasks;
 
 namespace DAL.ImplementRepository
 {
-    public class VideoRepo : IRepository<Video>
+    public class AnswerOptionRepo : IRepository<AnswerOption>
     {
         private readonly FitCourseDb _context;
-        public VideoRepo(FitCourseDb context)
+        public AnswerOptionRepo(FitCourseDb context)
         {
             _context = context;
         }
-        public async Task<Video> GetByID(int id)
+        public async Task<AnswerOption> GetByID(int id)
         {
-            return await _context.Video
+            return await _context.AnswerOption
+                .Include(a=>a.Question)
                 
-                .Include(v=>v.Section)
-                
-                .Where(r => r.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<int?> Create(Video entity)
+        public async Task<int?> Create(AnswerOption entity)
         {
             if (entity == null)
             {
@@ -39,7 +37,7 @@ namespace DAL.ImplementRepository
             return entity.Id;
         }
 
-        public async Task<bool> Delete(Video entity)
+        public async Task<bool> Delete(AnswerOption entity)
         {
             if (entity == null)
             {
@@ -50,32 +48,29 @@ namespace DAL.ImplementRepository
             return changes > 0;
         }
 
-        public async Task<List<Video>> GetAll()
+        public async Task<List<AnswerOption>> GetAll()
         {
-            return await _context.Video
-                         .Where(r => r.IsDeleted == false)
-
-                         .Include(v => v.Section)
-
+            return await _context.AnswerOption
+                        .Include(a => a.Question)
 
                          .ToListAsync();
         }
-        public async Task<List<Video>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Video, bool>> filter)
+        public async Task<List<AnswerOption>> GetAllByFilter(System.Linq.Expressions.Expression<Func<AnswerOption, bool>> filter)
         {
-            return await _context.Video
+            return await _context.AnswerOption
                 .Where(filter)
-                .Include(v => v.Section)
+                .Include(a => a.Question)
 
                 .ToListAsync();
         }
 
-        public async Task<bool> Update(Video entity)
+       
+
+        public async Task<bool> Update(AnswerOption entity)
         {
             _context.Update(entity);
             int changes = await _context.SaveChangesAsync();
             return changes > 0;
         }
-
-        
     }
 }
