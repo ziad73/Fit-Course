@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DAL.Entities.section;
 using DAL.Entities.user;
 
@@ -6,17 +7,27 @@ namespace DAL.Entities.course
 {
     public class Course
     {
+        [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage = "The Title is Required.")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "The Description is Required.")]
         public string Description { get; set; }
         public string? Category { get; set; }
-        public DateTime CreatedDate { get; set; }
-
-        public User Instructor { get; set; }
-        public string InstructorId { get; set; }//navigation property 
-
-
+      
+        public User User { get; set; }
+        [Required(ErrorMessage = "The Instructor Id is Required.")]
+        [ForeignKey("User")]
+        public string InstructorId { get; set; }//navigation property
         public List<Section> Sections { get; set; }
-
+        public DateTime CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+        public string? ModifiedBy { get; set; }
+        public DateTime? DeletedOn { get; set; }
+        public string? DeletedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        [Required(ErrorMessage ="The Course Price is Required.")]
+        public double Price { get; set; }
     }
 }
