@@ -15,7 +15,7 @@ namespace DAL.Entities.quizAttempt
         public int Id { get; set; }
         [Required(ErrorMessage ="The Score is Required.")]
         [Range(0,double.MaxValue, ErrorMessage = "The Score must be more than or equal 0.")]
-        public decimal Score { get; set; }
+        public double Score { get; set; }
 
         [Required(ErrorMessage ="The Coach Id is Required.")]
         [ForeignKey("User")]

@@ -14,7 +14,7 @@ namespace DAL.Entities.video
         public string VideoPath { get; set; }
         [Required(ErrorMessage ="The Duration is Required.")]
         [Range(1,double.MaxValue,ErrorMessage ="The duration must be more than or equal 1 minute.")]
-        public decimal Duration { get; set; }// his unite is minute 
+        public double Duration { get; set; }// his unite is minute 
         [Required(ErrorMessage ="The Title is Required.")]
         public string Title { get; set; }
         [Required(ErrorMessage ="The Section Id is Requirde.")]
