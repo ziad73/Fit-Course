@@ -1,6 +1,6 @@
 using DAL.Entities.course;
 using DAL.Entities.user;
-using Resturant_DAL.Entities;
+using DAL.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

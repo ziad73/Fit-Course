@@ -1,9 +1,8 @@
 ﻿
-
 using DAL.Enum.PaymentType;
 using System.ComponentModel.DataAnnotations;
 
-namespace Resturant_DAL.Entities
+namespace DAL.Entities
 {
     public class Payment
     {
