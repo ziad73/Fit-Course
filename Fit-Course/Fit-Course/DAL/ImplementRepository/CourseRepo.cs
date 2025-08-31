@@ -1,0 +1,80 @@
+﻿using DAL.Entities.course;
+using DAL.Repository;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DAL.ImplementRepository
+{
+    public class CourseRepo : IRepository<Course>
+    {
+        private readonly FitCourseDb _context;
+        public CourseRepo(FitCourseDb context)
+        {
+            _context = context;
+        }
+        public async Task<Course> GetByID(int id)
+        {
+            return await _context.Course
+                .Include(c=>c.Sections)
+                .Include(c=>c.User)
+                .Where(r => r.IsDeleted == false)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<int?> Create(Course entity)
+        {
+            if (entity == null)
+            {
+                return null;
+            }
+
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task Delete(Course entity)
+        {
+            if (entity == null)
+            {
+                return;
+            }
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Course>> GetAll()
+        {
+            return await _context.Course
+                         .Where(r => r.IsDeleted == false)
+                         .Include(c => c.Sections)
+                         .Include(c => c.User)
+
+                         .ToListAsync();
+        }
+        public async Task<List<Course>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Course, bool>> filter)
+        {
+            return await _context.Course
+                .Where(filter)
+                .Include(c => c.Sections)
+                .Include(c => c.User)
+                .ToListAsync();
+        }
+
+        public async Task UpdateAsync(Course entity)
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Update(Course entity)
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+    }
+}
