@@ -1,4 +1,6 @@
-﻿using DAL.Entities;
+﻿using DAL.Database;
+using DAL.Entities.answerOption;
+
 using DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,22 +9,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.ImplementRepository
+namespace DAL.Repository.ImplementRepository
 {
-    public class PaymentRepo : IRepository<Payment>
+    public class AnswerOptionRepo : IRepository<AnswerOption>
     {
         private readonly FitCourseDb _context;
-        public PaymentRepo(FitCourseDb context)
+        public AnswerOptionRepo(FitCourseDb context)
         {
             _context = context;
         }
-        public async Task<Payment> GetByID(int id)
+        public async Task<AnswerOption> GetByID(int id)
         {
-            return await _context.Payment
-                .FirstOrDefaultAsync(c => c.PaymentID == id);
+            return await _context.AnswerOption
+                .Include(a=>a.Question)
+                
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<int?> Create(Payment entity)
+        public async Task<int?> Create(AnswerOption entity)
         {
             if (entity == null)
             {
@@ -31,10 +35,10 @@ namespace DAL.ImplementRepository
 
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return entity.PaymentID;
+            return entity.Id;
         }
 
-        public async Task<bool> Delete(Payment entity)
+        public async Task<bool> Delete(AnswerOption entity)
         {
             if (entity == null)
             {
@@ -45,22 +49,25 @@ namespace DAL.ImplementRepository
             return changes > 0;
         }
 
-        public async Task<List<Payment>> GetAll()
+        public async Task<List<AnswerOption>> GetAll()
         {
-            return await _context.Payment
-                        
+            return await _context.AnswerOption
+                        .Include(a => a.Question)
+
                          .ToListAsync();
         }
-        public async Task<List<Payment>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Payment, bool>> filter)
+        public async Task<List<AnswerOption>> GetAllByFilter(System.Linq.Expressions.Expression<Func<AnswerOption, bool>> filter)
         {
-            return await _context.Payment
+            return await _context.AnswerOption
                 .Where(filter)
+                .Include(a => a.Question)
+
                 .ToListAsync();
         }
 
-      
+       
 
-        public async Task<bool> Update(Payment entity)
+        public async Task<bool> Update(AnswerOption entity)
         {
             _context.Update(entity);
             int changes = await _context.SaveChangesAsync();
