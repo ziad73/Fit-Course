@@ -1,4 +1,5 @@
-﻿using DAL.Entities.course;
+﻿using DAL.Database;
+using DAL.Entities.course;
 using DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.ImplementRepository
+namespace DAL.Repository.ImplementRepository
 {
     public class CourseRepo : IRepository<Course>
     {

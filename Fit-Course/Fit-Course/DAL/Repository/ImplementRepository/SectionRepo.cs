@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Entities.section;
 using Microsoft.EntityFrameworkCore;
-namespace DAL.ImplementRepository
+using DAL.Database;
+namespace DAL.Repository.ImplementRepository
 {
     public class SectionRepo : IRepository<Section>
     {
