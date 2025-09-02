@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Entities.enrollment;
 using DAL.Entities.instructor;
 using DAL.Entities.section;
 using DAL.Entities.user;
@@ -29,5 +30,8 @@ namespace DAL.Entities.course
         [Required(ErrorMessage = "The Course Price is Required.")]
         [Range(0, double.MaxValue, ErrorMessage = "The Price muset be more than or equal 0")]
         public double Price { get; set; }
+
+        //m to m
+        public List<Enrollment> Enrollments { get; set; }
     }
 }

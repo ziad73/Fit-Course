@@ -20,8 +20,9 @@ namespace DAL.Repository.ImplementRepository
         public async Task<Course> GetByID(int id)
         {
             return await _context.Course
-                .Include(c=>c.Sections)
-                .Include(c=>c.User)
+                .Include(c => c.Sections)
+                .Include(c => c.Instructor)
+                .Include(c => c.Enrollments)
                 .Where(r => r.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -54,8 +55,8 @@ namespace DAL.Repository.ImplementRepository
             return await _context.Course
                          .Where(r => r.IsDeleted == false)
                          .Include(c => c.Sections)
-                         .Include(c => c.User)
-
+                         .Include(c => c.Instructor)
+                         .Include(c => c.Enrollments)
                          .ToListAsync();
         }
         public async Task<List<Course>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Course, bool>> filter)
@@ -63,11 +64,12 @@ namespace DAL.Repository.ImplementRepository
             return await _context.Course
                 .Where(filter)
                 .Include(c => c.Sections)
-                .Include(c => c.User)
+                .Include(c => c.Instructor)
+                .Include(c => c.Enrollments)
                 .ToListAsync();
         }
 
-        
+
 
         public async Task<bool> Update(Course entity)
         {

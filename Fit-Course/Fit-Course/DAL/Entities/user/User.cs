@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using DAL.Entities.coachProgress;
 using DAL.Entities.course;
+using DAL.Entities.enrollment;
 using DAL.Entities.instructor;
+using DAL.Entities.quizAttempt;
 using DAL.Enum.user;
 using Humanizer;
 using Microsoft.AspNetCore.Identity;
@@ -21,5 +24,9 @@ namespace DAL.Entities.user
         public string? BlockedBy { get; set; }
         public Instructor Instructor { get; set; } // Navigation property
 
+        //M TO M
+        public List<CoachProgress> Progresses { get; set; }
+        public List<QuizAttempt> QuizAttempts { get; set; }
+        public List<Enrollment> Enrollments { get; set; }
     }
 }
