@@ -1,6 +1,5 @@
 using DAL.Entities.course;
 using DAL.Entities.user;
-using DAL.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
