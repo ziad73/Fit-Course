@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Entities.instructor;
 using DAL.Entities.section;
 using DAL.Entities.user;
 
@@ -15,10 +16,13 @@ namespace DAL.Entities.course
         public string Description { get; set; }
         public string? Status { get; set; }
       
-        public User User { get; set; }
+       
+        
+
+        public Instructor Instructor { get; set; }//navigation property
         [Required(ErrorMessage = "The Instructor Id is Required.")]
-        [ForeignKey("User")]
-        public string InstructorId { get; set; }//navigation property
+
+        public int InstructorId { get; set; }
         public List<Section> Sections { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
@@ -27,8 +31,8 @@ namespace DAL.Entities.course
         public DateTime? DeletedOn { get; set; }
         public string? DeletedBy { get; set; }
         public bool IsDeleted { get; set; }
-        [Required(ErrorMessage ="The Course Price is Required.")]
-        [Range(0,double.MaxValue,ErrorMessage ="The Price muset be more than or equal 0")]
+        [Required(ErrorMessage = "The Course Price is Required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "The Price muset be more than or equal 0")]
         public double Price { get; set; }
         public string? ImagePath { get; set; }
     }

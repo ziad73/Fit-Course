@@ -1,4 +1,5 @@
-﻿using DAL.Entities.answerOption;
+﻿using DAL.Database;
+using DAL.Entities.slide;
 
 using DAL.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -8,24 +9,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.ImplementRepository
+namespace DAL.Repository.ImplementRepository
 {
-    public class AnswerOptionRepo : IRepository<AnswerOption>
+    public class SlideRepo : IRepository<Slide>
     {
         private readonly FitCourseDb _context;
-        public AnswerOptionRepo(FitCourseDb context)
+        public SlideRepo(FitCourseDb context)
         {
             _context = context;
         }
-        public async Task<AnswerOption> GetByID(int id)
+        public async Task<Slide> GetByID(int id)
         {
-            return await _context.AnswerOption
-                .Include(a=>a.Question)
-                
+            return await _context.Slide
+                .Include(s=>s.Section)
+                .Where(r => r.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<int?> Create(AnswerOption entity)
+        public async Task<int?> Create(Slide entity)
         {
             if (entity == null)
             {
@@ -37,7 +38,7 @@ namespace DAL.ImplementRepository
             return entity.Id;
         }
 
-        public async Task<bool> Delete(AnswerOption entity)
+        public async Task<bool> Delete(Slide entity)
         {
             if (entity == null)
             {
@@ -48,25 +49,25 @@ namespace DAL.ImplementRepository
             return changes > 0;
         }
 
-        public async Task<List<AnswerOption>> GetAll()
+        public async Task<List<Slide>> GetAll()
         {
-            return await _context.AnswerOption
-                        .Include(a => a.Question)
+            return await _context.Slide
+                         .Where(r => r.IsDeleted == false)
+                         .Include(s => s.Section)
 
                          .ToListAsync();
         }
-        public async Task<List<AnswerOption>> GetAllByFilter(System.Linq.Expressions.Expression<Func<AnswerOption, bool>> filter)
+        public async Task<List<Slide>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Slide, bool>> filter)
         {
-            return await _context.AnswerOption
+            return await _context.Slide
                 .Where(filter)
-                .Include(a => a.Question)
-
+                .Include(s => s.Section)
                 .ToListAsync();
         }
 
-       
+      
 
-        public async Task<bool> Update(AnswerOption entity)
+        public async Task <bool>Update(Slide entity)
         {
             _context.Update(entity);
             int changes = await _context.SaveChangesAsync();
