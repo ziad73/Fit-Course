@@ -13,7 +13,7 @@ namespace DAL.Entities.course
         public string Title { get; set; }
         [Required(ErrorMessage = "The Description is Required.")]
         public string Description { get; set; }
-        public string? Category { get; set; }
+        public string? Status { get; set; }
       
         public User User { get; set; }
         [Required(ErrorMessage = "The Instructor Id is Required.")]
@@ -30,5 +30,6 @@ namespace DAL.Entities.course
         [Required(ErrorMessage ="The Course Price is Required.")]
         [Range(0,double.MaxValue,ErrorMessage ="The Price muset be more than or equal 0")]
         public double Price { get; set; }
+        public string? ImagePath { get; set; }
     }
 }

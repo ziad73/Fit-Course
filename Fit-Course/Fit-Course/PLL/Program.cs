@@ -1,5 +1,11 @@
+using BLL.ImplementServices;
+using BLL.Services;
 using DAL;
+using DAL.Entities.course;
+using DAL.ImplementRepository;
+using DAL.Repository;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +22,12 @@ builder.Services.AddDbContext<FitCourseDb>(options =>
         mysqlOptions => mysqlOptions.MigrationsAssembly("DAL")
     )
 );
+// repos injection
+builder.Services.AddScoped<IRepository<Course>, CourseRepo>();
+
+
+// services injection
+builder.Services.AddScoped<ICourseService, CourseService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

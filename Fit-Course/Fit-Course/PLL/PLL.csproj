@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\Modal\" />
+    <Folder Include="wwwroot\Files\CoursesImages\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <PropertyGroup>
