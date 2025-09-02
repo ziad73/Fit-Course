@@ -21,7 +21,7 @@ namespace BLL.DTOS.CourseDTOS
         public User User { get; set; }
         [Required(ErrorMessage = "The Instructor Id is Required.")]
        
-        public string InstructorId { get; set; }
+        public int InstructorId { get; set; }
         [Required(ErrorMessage = "The Course Price is Required.")]
         [Range(0, double.MaxValue, ErrorMessage = "The Price muset be more than or equal 0")]
         public double Price { get; set; }

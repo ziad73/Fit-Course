@@ -3,8 +3,10 @@ using BLL.Services;
 using DAL;
 using DAL.Database;
 using DAL.Entities.course;
-using DAL.ImplementRepository;
+using DAL.Entities.user;
 using DAL.Repository;
+using DAL.Repository.ImplementRepository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -29,6 +31,18 @@ builder.Services.AddScoped<IRepository<Course>, CourseRepo>();
 
 // services injection
 builder.Services.AddScoped<ICourseService, CourseService>();
+
+builder.Services.AddIdentity<User, IdentityRole>(option =>
+{
+    option.Password.RequiredLength = 4;
+    option.Password.RequireDigit = false;
+    option.Password.RequireNonAlphanumeric = false;
+    option.Password.RequireUppercase = false;
+    option.SignIn.RequireConfirmedAccount = true;
+
+
+}).AddEntityFrameworkStores<FitCourseDb>().AddDefaultTokenProviders();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

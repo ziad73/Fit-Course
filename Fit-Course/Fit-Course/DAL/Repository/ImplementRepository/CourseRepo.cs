@@ -21,7 +21,7 @@ namespace DAL.Repository.ImplementRepository
         {
             return await _context.Course
                 .Include(c=>c.Sections)
-                .Include(c=>c.User)
+                .Include(c=>c.Instructor)
                 .Where(r => r.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -54,7 +54,7 @@ namespace DAL.Repository.ImplementRepository
             return await _context.Course
                          .Where(r => r.IsDeleted == false)
                          .Include(c => c.Sections)
-                         .Include(c => c.User)
+                         .Include(c => c.Instructor)
 
                          .ToListAsync();
         }
@@ -63,7 +63,7 @@ namespace DAL.Repository.ImplementRepository
             return await _context.Course
                 .Where(filter)
                 .Include(c => c.Sections)
-                .Include(c => c.User)
+                .Include(c => c.Instructor)
                 .ToListAsync();
         }
 
