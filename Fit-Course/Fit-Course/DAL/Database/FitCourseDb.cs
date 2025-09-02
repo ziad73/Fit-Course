@@ -3,6 +3,7 @@ using DAL.Entities.answerOption;
 using DAL.Entities.coachProgress;
 using DAL.Entities.course;
 using DAL.Entities.enrollment;
+using DAL.Entities.instructor;
 using DAL.Entities.question;
 using DAL.Entities.quiz;
 using DAL.Entities.quizAttempt;
@@ -32,6 +33,7 @@ namespace DAL.Database
         public DbSet<Section> Section { get; set; }
         public DbSet<Slide> Slide { get; set; }
         public DbSet<Video> Video { get; set; }
+        public DbSet<Instructor> Instructor { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -20,8 +20,9 @@ namespace DAL.Repository.ImplementRepository
         public async Task<Quiz> GetByID(int id)
         {
             return await _context.Quiz
-                .Include(q=>q.Section)
-                .Include(q=>q.Question)
+                .Include(q => q.Section)
+                .Include(q => q.Question)
+                .Include(q => q.quizAttempts)
                 .Where(r => r.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -54,6 +55,7 @@ namespace DAL.Repository.ImplementRepository
             return await _context.Quiz
                          .Where(r => r.IsDeleted == false)
                          .Include(q => q.Section)
+                .Include(q => q.quizAttempts)
                 .Include(q => q.Question)
 
                          .ToListAsync();
@@ -63,6 +65,7 @@ namespace DAL.Repository.ImplementRepository
             return await _context.Quiz
                 .Where(filter)
                 .Include(q => q.Section)
+                .Include(q => q.quizAttempts)
                 .Include(q => q.Question)
                 .ToListAsync();
         }
@@ -74,6 +77,6 @@ namespace DAL.Repository.ImplementRepository
             return changes > 0;
         }
 
-      
+
     }
 }
