@@ -33,7 +33,7 @@ namespace DAL.Database
         public virtual DbSet<Section> Section { get; set; }
         public virtual DbSet<Slide> Slide { get; set; }
         public virtual DbSet<Video> Video { get; set; }
-        
+        public virtual DbSet<Instructor> Instructor { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
