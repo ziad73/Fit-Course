@@ -27,14 +27,21 @@ namespace DAL.Repository.ImplementRepository
         }
 
         public async Task<int?> Create(Course entity)
-        {
-            if (entity == null)
+         {
+            try
             {
-                return null;
-            }
+                if (entity == null)
+                {
+                    return null;
+                }
 
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
+                await _context.Course.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                
+            }
+            catch (Exception ex) { 
+            Console.WriteLine(ex.ToString());
+            }
             return entity.Id;
         }
 

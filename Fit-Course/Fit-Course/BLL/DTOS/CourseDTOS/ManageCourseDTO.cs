@@ -10,6 +10,6 @@ namespace BLL.DTOS.CourseDTOS
     public class ManageCourseDTO
     {
         public CourseDTO CourseDTO { get; set; }
-        public List<User> Instructors { get; set; }
+        //public List<User> Instructors { get; set; }
     }
 }

@@ -20,22 +20,44 @@ namespace PLL.Controllers
             
             return View("Index");
         }
-        public async Task<IActionResult> AddCourse(ManageCourseDTO mc)
+        public IActionResult AddCourse()
         {
-            ManageCourseDTO courseDTO = new ManageCourseDTO();
-            var usersInRole = await _userManager.GetUsersInRoleAsync("Instructor");
-            courseDTO.Instructors =usersInRole.ToList();
-            return PartialView("_AddCourse", mc);
+            return PartialView("~/Views/Shared/Course/_AddCourse.cshtml");
         }
+        [HttpPost]
         public async Task<IActionResult> SaveNewCourse(ManageCourseDTO mc)
         {
             if (ModelState.IsValid) 
             {
-                if (_CS.Create(mc.CourseDTO) != null)
-                    return RedirectToAction("Index");
-
+                var result = await _CS.Create(mc.CourseDTO);
+                if (result != null)
+                    return Json(new { success = true, message = "Course created successfully" });
+                else
+                    return Json(new { success = false, message = "Failed to create course" });
             }
-           return RedirectToAction("AddCourse",mc);
+            string allErrorsText = string.Empty;
+            var allErrors = ModelState.Values
+         .SelectMany(v => v.Errors)
+         .Select(e => e.ErrorMessage)
+         .ToList();
+            foreach (string error in allErrors) 
+            {
+              allErrorsText += $"{error}, ";
+            }
+            return Json(new { success = false, message = allErrorsText });
+
+        }
+        public async Task<IActionResult> AllCourses()
+        {
+            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c=>c.IsDeleted==true || c.IsDeleted==false));
+        }
+        public async Task<IActionResult> AllCoursesDraft()
+        {
+            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c => c.IsDeleted == true ));
+        }
+        public async Task<IActionResult> AllCoursesPublished()
+        {
+            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c =>  c.IsDeleted == false));
         }
     }
 }
