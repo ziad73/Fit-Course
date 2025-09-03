@@ -1,33 +1,31 @@
-﻿using DAL.Database;
-using DAL.Entities.quiz;
 using DAL.Repository;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
+using DAL.Database;
+using DAL.Entities.question;
 namespace DAL.Repository.ImplementRepository
 {
-    public class QuizRepo : IRepository<Quiz>
+    public class QuestionRepo : IRepository<Question>
     {
         private readonly FitCourseDb _context;
-        public QuizRepo(FitCourseDb context)
+        public QuestionRepo(FitCourseDb context)
         {
             _context = context;
         }
-        public async Task<Quiz> GetByID(int id)
+        public async Task<Question> GetByID(int id)
         {
-            return await _context.Quiz
-                .Include(q => q.Section)
-                .Include(q => q.Question)
-                .Include(q => q.quizAttempts)
+            return await _context.Question
+                .Include(q => q.Quiz)
+                .Include(q => q.answerOptions)
                 .Where(r => r.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<int?> Create(Quiz entity)
+        public async Task<int?> Create(Question entity)
         {
             if (entity == null)
             {
@@ -39,7 +37,7 @@ namespace DAL.Repository.ImplementRepository
             return entity.Id;
         }
 
-        public async Task<bool> Delete(Quiz entity)
+        public async Task<bool> Delete(Question entity)
         {
             if (entity == null)
             {
@@ -50,33 +48,28 @@ namespace DAL.Repository.ImplementRepository
             return changes > 0;
         }
 
-        public async Task<List<Quiz>> GetAll()
+        public async Task<List<Question>> GetAll()
         {
-            return await _context.Quiz
+            return await _context.Question
                          .Where(r => r.IsDeleted == false)
-                         .Include(q => q.Section)
-                .Include(q => q.quizAttempts)
-                .Include(q => q.Question)
-
+                .Include(q => q.Quiz)
+                .Include(q => q.answerOptions)
                          .ToListAsync();
         }
-        public async Task<List<Quiz>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Quiz, bool>> filter)
+        public async Task<List<Question>> GetAllByFilter(System.Linq.Expressions.Expression<Func<Question, bool>> filter)
         {
-            return await _context.Quiz
+            return await _context.Question
                 .Where(filter)
-                .Include(q => q.Section)
-                .Include(q => q.quizAttempts)
-                .Include(q => q.Question)
+                .Include(q => q.Quiz)
+                .Include(q => q.answerOptions)
                 .ToListAsync();
         }
 
-        public async Task<bool> Update(Quiz entity)
+        public async Task<bool> Update(Question entity)
         {
             _context.Update(entity);
             int changes = await _context.SaveChangesAsync();
             return changes > 0;
         }
-
-
     }
 }

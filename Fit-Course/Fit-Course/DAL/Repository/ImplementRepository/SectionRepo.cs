@@ -19,10 +19,11 @@ namespace DAL.Repository.ImplementRepository
         public async Task<Section> GetByID(int id)
         {
             return await _context.Section
-                .Include(s=>s.Course)
-                .Include(s=>s.Slide)
-                .Include(s=>s.Video)
-                .Include(s=>s.Quiz)
+                .Include(s => s.Course)
+                .Include(s => s.Slide)
+                .Include(s => s.Video)
+                .Include(s => s.Quiz)
+                .Include(s => s.Progresses)
                 .Where(r => r.IsDeleted == false)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
@@ -57,6 +58,7 @@ namespace DAL.Repository.ImplementRepository
                          .Include(s => s.Course)
                          .Include(s => s.Slide)
                          .Include(s => s.Video)
+                .Include(s => s.Progresses)
                          .Include(s => s.Quiz)
                          .ToListAsync();
         }
@@ -67,11 +69,10 @@ namespace DAL.Repository.ImplementRepository
                 .Include(s => s.Course)
                 .Include(s => s.Slide)
                 .Include(s => s.Video)
+                .Include(s => s.Progresses)
                 .Include(s => s.Quiz)
                 .ToListAsync();
         }
-
-       
 
         public async Task<bool> Update(Section entity)
         {
