@@ -45,26 +45,12 @@ namespace BLL.ImplementServices
             return mappedCourse;
         }
 
-        public async Task<bool> Draft(int id)
-        {
-            Course t = await _CR.GetByID(id);
-            var user = await userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-            if (t == null || t.IsDeleted == true)
-            {
-                return false;
-            }
-
-            t.IsDeleted = true;
-            t.DeletedOn = DateTime.UtcNow;
-            t.DeletedBy = user.FullName;
-            await _CR.Update(t);
-            return true;
-        }
+       
         public async Task<bool> Delete(int id)
         {
             Course t = await _CR.GetByID(id);
             var user = await userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-            if (t == null || t.IsDeleted == true)
+            if (t == null )
             {
                 return false;
             }
@@ -77,7 +63,7 @@ namespace BLL.ImplementServices
         {
             Course t = await _CR.GetByID(id);
 
-            if (t == null || t.IsDeleted == true)
+            if (t == null )
             {
                 return null;
             }
@@ -123,8 +109,10 @@ namespace BLL.ImplementServices
             UpdateCourse.Price = Course.Price;
             UpdateCourse.InstructorId = Course.InstructorId!=null ? Course.InstructorId:null;
             UpdateCourse.ModifiedOn = DateTime.UtcNow;
-            UpdateCourse.ModifiedBy = user.FullName;
-            UpdateCourse.IsDeleted = false;
+            UpdateCourse.ModifiedBy ="" /*user.FullName*/;
+            if (Course.Status == "published")
+                UpdateCourse.IsDeleted = false;
+            else UpdateCourse.IsDeleted = true;
             await _CR.Update(UpdateCourse);
             return UpdateCourse;
         }

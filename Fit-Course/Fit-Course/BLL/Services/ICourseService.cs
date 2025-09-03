@@ -17,6 +17,6 @@ namespace BLL.Services
         public Task<Course?> Create(CourseDTO Course);
         public Task<Course?> Update(CourseDTO Course);
         public Task<bool> Delete(int id);
-        public  Task<bool> Draft(int id);
+       
     }
 }

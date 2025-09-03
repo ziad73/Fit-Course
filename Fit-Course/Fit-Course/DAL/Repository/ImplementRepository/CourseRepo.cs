@@ -23,7 +23,7 @@ namespace DAL.Repository.ImplementRepository
                 .Include(c => c.Sections)
                 .Include(c => c.Instructor)
                 .Include(c => c.Enrollments)
-                .Where(r => r.IsDeleted == false)
+               
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
