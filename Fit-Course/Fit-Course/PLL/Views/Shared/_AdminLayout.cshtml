@@ -158,7 +158,9 @@
             text-align: center;
             font-size: 0.8rem;
         }
+
     </style>
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
    
@@ -179,33 +181,15 @@
                         <a class="nav-link active" asp-controller="Course" asp-action="Index">
                             <i class="fas fa-book"></i>Courses
                         </a>
-                        <a class="nav-link" href="admin-sections.html">
-                            <i class="fas fa-list"></i>Sections
-                        </a>
-                        <a class="nav-link" href="admin-videos.html">
-                            <i class="fas fa-video"></i>Videos
-                        </a>
-                        <a class="nav-link" href="admin-slides.html">
-                            <i class="fas fa-file-powerpoint"></i>Slides
-                        </a>
-                        <a class="nav-link" href="admin-quizzes.html">
-                            <i class="fas fa-question-circle"></i>Quizzes
-                        </a>
-                        <a class="nav-link" href="admin-questions.html">
-                            <i class="fas fa-question"></i>Questions
-                        </a>
+                      
                         <a class="nav-link" href="admin-instructors.html">
                             <i class="fas fa-chalkboard-teacher"></i>Instructors
                         </a>
-                        <a class="nav-link" href="admin-analytics.html">
-                            <i class="fas fa-chart-line"></i>Analytics
-                        </a>
+                       
                         <a class="nav-link" href="admin-settings.html">
                             <i class="fas fa-cog"></i>Settings
                         </a>
-                        <a class="nav-link" href="admin-reports.html">
-                            <i class="fas fa-file-alt"></i>Reports
-                        </a>
+                       
                     </nav>
                 </div>
             </div>

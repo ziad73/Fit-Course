@@ -60,7 +60,7 @@ namespace DAL.Repository.ImplementRepository
         public async Task<List<Course>> GetAll()
         {
             return await _context.Course
-                         .Where(r => r.IsDeleted == false)
+                         
                          .Include(c => c.Sections)
                          .Include(c => c.Instructor)
                          .Include(c => c.Enrollments)

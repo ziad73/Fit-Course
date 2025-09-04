@@ -38,9 +38,7 @@ namespace BLL.ImplementServices
             mappedCourse.CreatedBy = ""/*user.FullName*/;
             mappedCourse.ImagePath= Course.ImageUrl!=null? Upload.UploadFile("CourseImages", Course.ImageUrl):null;
             mappedCourse.InstructorId= Course.InstructorId != null ? Course.InstructorId : null;
-            if(Course.Status=="Published")
-              mappedCourse.IsDeleted = false;
-            else mappedCourse.IsDeleted = true;
+           
             await _CR.Create(mappedCourse);
             return mappedCourse;
         }
@@ -74,7 +72,7 @@ namespace BLL.ImplementServices
 
         public async Task<List<CourseDTO>> GetList()
         {
-            List<Course> Courses = (await _CR.GetAll()).Where(t => t.IsDeleted == false).ToList();
+            List<Course> Courses = (await _CR.GetAll());
 
             if (Courses == null || Courses.Count == 0)
             {
@@ -110,9 +108,7 @@ namespace BLL.ImplementServices
             UpdateCourse.InstructorId = Course.InstructorId!=null ? Course.InstructorId:null;
             UpdateCourse.ModifiedOn = DateTime.UtcNow;
             UpdateCourse.ModifiedBy ="" /*user.FullName*/;
-            if (Course.Status == "published")
-                UpdateCourse.IsDeleted = false;
-            else UpdateCourse.IsDeleted = true;
+           
             await _CR.Update(UpdateCourse);
             return UpdateCourse;
         }

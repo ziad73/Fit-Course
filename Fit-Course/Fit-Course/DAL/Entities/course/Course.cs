@@ -31,9 +31,8 @@ namespace DAL.Entities.course
         public string CreatedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
         public string? ModifiedBy { get; set; }
-        public DateTime? DeletedOn { get; set; }
-        public string? DeletedBy { get; set; }
-        public bool IsDeleted { get; set; }
+       
+        
         [Required(ErrorMessage = "The Course Price is Required.")]
         [Range(0, double.MaxValue, ErrorMessage = "The Price muset be more than or equal 0")]
         public double Price { get; set; }

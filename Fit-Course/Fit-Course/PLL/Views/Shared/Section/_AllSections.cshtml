@@ -1,0 +1,77 @@
+﻿@model List<SectionDTO>
+
+
+<div class="row">
+
+    @foreach (var s in @Model)
+    {
+        <div class="col-lg-6 mb-4">
+            <div class="section-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="order-badge me-3">@s.OrderIndex</span>
+                        <div>
+                            <h6 class="mb-1">@s.Title</h6>
+                            
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="editSection('@s.Id')"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                            <li><a class="dropdown-item" href="admin-videos.html"><i class="fas fa-video me-2"></i>Manage Videos</a></li>
+                            <li><a class="dropdown-item" href="admin-slides.html"><i class="fas fa-file-powerpoint me-2"></i>Manage Slides</a></li>
+                            <li><a class="dropdown-item" href="admin-quizzes.html"><i class="fas fa-question-circle me-2"></i>Manage Quizzes</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="deleteSection('@s.Id')"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+                <p class="text-muted mb-3">@s.Description</p>
+
+                <div class="row text-center mb-3">
+                    <div class="col-3">
+                        <div class="content-count">
+                            <div class="fw-bold">5</div>
+                            <small class="text-muted">Videos</small>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="content-count">
+                            <div class="fw-bold">4</div>
+                            <small class="text-muted">Slides</small>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="content-count">
+                            <div class="fw-bold">1</div>
+                            <small class="text-muted">Quiz</small>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="content-count">
+                            <div class="fw-bold">75</div>
+                            <small class="text-muted">Min</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary btn-sm flex-fill" onclick="editSection('@s.Id')">
+                        <i class="fas fa-edit me-1"></i>Edit
+                    </button>
+                    <button type="button" class="btn btn-outline-warning btn-sm" onclick="deleteSection('@s.Id')">
+                        <i class="fas fa-archive"></i>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+

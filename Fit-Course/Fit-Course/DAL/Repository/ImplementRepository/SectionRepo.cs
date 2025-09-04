@@ -24,7 +24,7 @@ namespace DAL.Repository.ImplementRepository
                 .Include(s => s.Video)
                 .Include(s => s.Quiz)
                 .Include(s => s.Progresses)
-                .Where(r => r.IsDeleted == false)
+               
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -54,7 +54,7 @@ namespace DAL.Repository.ImplementRepository
         public async Task<List<Section>> GetAll()
         {
             return await _context.Section
-                         .Where(r => r.IsDeleted == false)
+                      
                          .Include(s => s.Course)
                          .Include(s => s.Slide)
                          .Include(s => s.Video)

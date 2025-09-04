@@ -1,0 +1,44 @@
+﻿<!-- Add Section Modal -->
+@model SectionDTO
+
+<div class="modal fade" id="addSectionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="sectionForm" asp-controller="Section" asp-action="SaveNewSection" enctype="multipart/form-data" method="post">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Section Title</label>
+                            <input type="text" class="form-control" asp-for="@Model.Title">
+                           
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Order Index</label>
+                            <input type="number" class="form-control" min="1"  asp-for="@Model.OrderIndex">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="4" placeholder="Describe your Section..." asp-for="@Model.Description"></textarea>
+                        <div class="text-danger">
+                            <span asp-validation-for="@Model.Description"></span>
+                        </div>
+                    </div>
+
+
+                   
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Section</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

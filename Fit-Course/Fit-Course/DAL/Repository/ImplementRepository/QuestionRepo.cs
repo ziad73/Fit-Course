@@ -21,7 +21,7 @@ namespace DAL.Repository.ImplementRepository
             return await _context.Question
                 .Include(q => q.Quiz)
                 .Include(q => q.answerOptions)
-                .Where(r => r.IsDeleted == false)
+               
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -51,7 +51,7 @@ namespace DAL.Repository.ImplementRepository
         public async Task<List<Question>> GetAll()
         {
             return await _context.Question
-                         .Where(r => r.IsDeleted == false)
+                        
                 .Include(q => q.Quiz)
                 .Include(q => q.answerOptions)
                          .ToListAsync();

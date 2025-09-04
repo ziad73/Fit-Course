@@ -80,15 +80,15 @@ namespace PLL.Controllers
 
         public async Task<IActionResult> AllCourses()
         {
-            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c=>c.IsDeleted==true || c.IsDeleted==false));
+            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList());
         }
         public async Task<IActionResult> AllCoursesDraft()
         {
-            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c => c.IsDeleted == true ));
+            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c => c.Status == "draft" ));
         }
         public async Task<IActionResult> AllCoursesPublished()
         {
-            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c =>  c.IsDeleted == false));
+            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c =>  c.Status == "published"));
         }
         [HttpPost]
         public async Task<IActionResult> DeleteCourse(int id)

@@ -22,7 +22,7 @@ namespace DAL.Repository.ImplementRepository
         {
             return await _context.Slide
                 .Include(s=>s.Section)
-                .Where(r => r.IsDeleted == false)
+               
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -52,7 +52,7 @@ namespace DAL.Repository.ImplementRepository
         public async Task<List<Slide>> GetAll()
         {
             return await _context.Slide
-                         .Where(r => r.IsDeleted == false)
+                        
                          .Include(s => s.Section)
 
                          .ToListAsync();
