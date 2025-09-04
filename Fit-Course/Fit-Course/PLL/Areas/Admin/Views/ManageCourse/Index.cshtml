@@ -91,7 +91,7 @@
 
             console.log("hi");
             $.ajax({
-                url: "/Course/AllCourses", success: function (result) {
+                url: "/Admin/Course/AllCourses", success: function (result) {
 
                     $("#AllCourses").html(result);
 
@@ -103,7 +103,7 @@
 
             console.log("hi");
             $.ajax({
-                url: "/Course/AllCoursesPublished", success: function (result) {
+                url: "/Admin/Course/AllCoursesPublished", success: function (result) {
 
                     $("#AllCourses").html(result);
 
@@ -115,7 +115,7 @@
 
             console.log("hi");
             $.ajax({
-                url: "/Course/AllCoursesDraft", success: function (result) {
+                url: "/Admin/Course/AllCoursesDraft", success: function (result) {
 
                     $("#AllCourses").html(result);
 
@@ -127,7 +127,7 @@
 
             console.log("hi");
             $.ajax({
-                url: "/Course/AddCourse", success: function (result) {
+                url: "/Admin/Course/AddCourse", success: function (result) {
 
 
                     $("#AddCourseModal").html(result);
@@ -141,7 +141,7 @@
             e.preventDefault(); // prevent page refresh
             console.log("hi");
             $.ajax({
-                url: '/Course/SaveEditCourse',
+                url: '/Admin/Course/SaveEditCourse',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
@@ -177,7 +177,7 @@
             e.preventDefault(); // prevent page refresh
             console.log("hi");
             $.ajax({
-                url: '/Course/SaveNewCourse',
+                url: '/Admin/Course/SaveNewCourse',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
@@ -243,7 +243,7 @@
         function editCourse(courseId) {
             console.log(courseId);
             $.ajax({
-                url: "/Course/EditCourse?courseId=" + courseId, success: function (result) {
+                url: "/Admin/Course/EditCourse?courseId=" + courseId, success: function (result) {
 
 
                     $("#EditCourseModal").html(result);
@@ -274,7 +274,7 @@
             // Bind Delete button action
             $(document).off('click', '#confirmDeleteBtn').on('click', '#confirmDeleteBtn', function () {
                 $.ajax({
-                    url: '/Course/DeleteCourse',
+                    url: '/Admin/Course/DeleteCourse',
                     type: 'POST',
                     data: { id: courseId },
                     success: function (response) {

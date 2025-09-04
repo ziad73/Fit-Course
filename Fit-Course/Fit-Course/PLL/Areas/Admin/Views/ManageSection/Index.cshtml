@@ -108,7 +108,7 @@
 
             console.log("hi");
             $.ajax({
-                url: "/Section/AllSections", success: function (result) {
+                url: "/Admin/Section/AllSections", success: function (result) {
 
                     $("#AllSections").html(result);
 
@@ -121,7 +121,7 @@
 
             console.log("hi");
             $.ajax({
-                url: "/Section/AddSection", success: function (result) {
+                url: "/Admin/Section/AddSection", success: function (result) {
 
 
                     $("#AddSectionModal").html(result);
@@ -135,7 +135,7 @@
             e.preventDefault(); // prevent page refresh
             console.log("hi");
             $.ajax({
-                url: '/Section/SaveEditSection',
+                url: '/Admin/Section/SaveEditSection',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
@@ -171,7 +171,7 @@
             e.preventDefault(); // prevent page refresh
             console.log("hi");
             $.ajax({
-                url: '/Section/SaveNewSection',
+                url: '/Admin/Section/SaveNewSection',
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
@@ -238,7 +238,7 @@
         function editSection(sectionId) {
             console.log(sectionId);
             $.ajax({
-                url: "/Section/EditSection?sectionId=" + sectionId, success: function (result) {
+                url: "/Admin/Section/EditSection?sectionId=" + sectionId, success: function (result) {
 
 
                     $("#EditSectionModal").html(result);
@@ -269,7 +269,7 @@
             // Bind Delete button action
             $(document).off('click', '#confirmDeleteBtn').on('click', '#confirmDeleteBtn', function () {
                 $.ajax({
-                    url: '/Section/DeleteSection',
+                    url: '/Admin/Section/DeleteSection',
                     type: 'POST',
                     data: { id: sectionId },
                     success: function (response) {
