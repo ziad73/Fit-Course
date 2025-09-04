@@ -23,7 +23,7 @@ namespace PLL.Controllers
         }
         public IActionResult AddSection()
         {
-            return PartialView("~/Views/Shared/Section/_AddSection.cshtml");
+            return PartialView("~/Views/AdminDashboard/ManageSection/_AddSection.cshtml");
         }
         [HttpGet]
         public async Task<IActionResult> EditSection(int sectionId)
@@ -32,7 +32,7 @@ namespace PLL.Controllers
             s = await _SS.GetById(sectionId);
             if (s == null)
                 return BadRequest("No section selected.");
-            return PartialView("~/Views/Shared/Section/_EditSection.cshtml", s);
+            return PartialView("~/Views/AdminDashboard/ManageSection/_EditSection.cshtml", s);
         }
         [HttpPost]
         public async Task<IActionResult> SaveNewSection(SectionDTO s)
@@ -90,7 +90,7 @@ namespace PLL.Controllers
             if (courseId == null)
                 return BadRequest("No course selected.");
             
-            return PartialView("~/Views/Shared/Section/_AllSections.cshtml", await _SS.GetList(s => s.CourseId == courseId));
+            return PartialView("~/Views/AdminDashboard/ManageSection/_AllSections.cshtml", await _SS.GetList(s => s.CourseId == courseId));
         }
 
         [HttpPost]

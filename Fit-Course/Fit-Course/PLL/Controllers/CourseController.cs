@@ -22,14 +22,14 @@ namespace PLL.Controllers
         }
         public IActionResult AddCourse()
         {
-            return PartialView("~/Views/Shared/Course/_AddCourse.cshtml");
+            return PartialView("~/Views/AdminDashboard/ManageCourse/_AddCourse.cshtml");
         }
         [HttpGet]
         public async  Task<IActionResult> EditCourse(int courseId)
         {
             ManageCourseDTO mc=new ManageCourseDTO();
             mc.CourseDTO = await _CS.GetById(courseId);
-            return PartialView("~/Views/Shared/Course/_EditCourse.cshtml",mc);
+            return PartialView("~/Views/AdminDashboard/ManageCourse/_EditCourse.cshtml", mc);
         }
         [HttpPost]
         public async Task<IActionResult> SaveNewCourse(ManageCourseDTO mc)
@@ -80,15 +80,15 @@ namespace PLL.Controllers
 
         public async Task<IActionResult> AllCourses()
         {
-            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList());
+            return PartialView("~/Views/AdminDashboard/ManageCourse/_AllCourses.cshtml", await _CS.GetList());
         }
         public async Task<IActionResult> AllCoursesDraft()
         {
-            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c => c.Status == "draft" ));
+            return PartialView("~/Views/AdminDashboard/ManageCourse/_AllCourses.cshtml", await _CS.GetList(c => c.Status == "draft" ));
         }
         public async Task<IActionResult> AllCoursesPublished()
         {
-            return PartialView("~/Views/Shared/Course/_AllCourses.cshtml", await _CS.GetList(c =>  c.Status == "published"));
+            return PartialView("~/Views/AdminDashboard/ManageCourse/_AllCourses.cshtml", await _CS.GetList(c =>  c.Status == "published"));
         }
         [HttpPost]
         public async Task<IActionResult> DeleteCourse(int id)
