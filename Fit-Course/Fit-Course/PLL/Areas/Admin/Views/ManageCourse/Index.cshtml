@@ -59,22 +59,8 @@
 
        </div>
     
-    <!-- Pagination -->
-    <div class="pagination-container">
-        <nav aria-label="Course pagination">
-            <ul class="pagination justify-content-center mb-0">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+   
+   
   </div>
        
 <div id="AddCourseModal"></div>
@@ -84,14 +70,14 @@
 @section Scripts{
     <script>
         window.onload = async function () {
-          
-            await GetAllCourses();
-        };
-        function GetAllCourses() {
 
+            await GetAllCourses(1);
+        };
+        function GetAllCourses(pageNumber) {
+            console.log(pageNumber);
             console.log("hi");
             $.ajax({
-                url: "/Admin/Course/AllCourses", success: function (result) {
+                url: "/Admin/Course/AllCourses?pageNumber=" + pageNumber, success: function (result) {
 
                     $("#AllCourses").html(result);
 
@@ -99,11 +85,11 @@
             });
 
         };
-        function GetAllCoursesPublished() {
+        function GetAllCoursesPublished(pageNumber) {
 
             console.log("hi");
             $.ajax({
-                url: "/Admin/Course/AllCoursesPublished", success: function (result) {
+                url: "/Admin/Course/AllCoursesPublished?pageNumber="+pageNumber, success: function (result) {
 
                     $("#AllCourses").html(result);
 
@@ -111,11 +97,11 @@
             });
 
         };
-        function GetAllCoursesDraft() {
+        function GetAllCoursesDraft(pageNumber) {
 
             console.log("hi");
             $.ajax({
-                url: "/Admin/Course/AllCoursesDraft", success: function (result) {
+                url: "/Admin/Course/AllCoursesDraft?pageNumber=" + pageNumber, success: function (result) {
 
                     $("#AllCourses").html(result);
 

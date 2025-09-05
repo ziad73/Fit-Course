@@ -83,14 +83,14 @@ namespace BLL.ImplementServices
         }
         public async Task<List<SectionDTO>> GetList(Expression<Func<Section, bool>> filter)
         {
-            List<Section> chiefs = await _CR.GetAllByFilter(filter);
+            List<Section> sections = await _CR.GetAllByFilter(filter);
 
-            if (chiefs == null || chiefs.Count == 0)
+            if (sections == null || sections.Count == 0)
             {
                 return new List<SectionDTO>();
             }
 
-            return new SectionMapper().MapToSectionDTOList(chiefs);
+            return new SectionMapper().MapToSectionDTOList(sections);
         }
         public async Task<Section?> Update(SectionDTO Section)
         {

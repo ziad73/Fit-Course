@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BLL.Services;
 using Microsoft.AspNetCore.Identity;
 using DAL.Entities.user;
+using PLL.Areas.Admin.ViewsModels.CourseVM;
 namespace PLL.Controllers
 {
     [Area("Admin")]
@@ -78,19 +79,63 @@ namespace PLL.Controllers
             return Json(new { success = false, message = allErrorsText });
 
         }
+        [HttpGet]
+        public async Task<IActionResult> AllCourses(int pageSize=3,int pageNumber=1)
+        {
+            var courses =await _CS.GetList(); 
 
-        public async Task<IActionResult> AllCourses()
+            var pagedCourses = courses
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            int totalCourses = courses.Count;
+
+            return PartialView("~/Areas/Admin/Views/ManageCourse/_AllCourses.cshtml", new PagedCourses
+            {
+                Courses = pagedCourses,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalCourses / (double)pageSize)
+            });
+         }
+        [HttpGet]
+        public async Task<IActionResult> AllCoursesDraft(int pageSize = 3, int pageNumber = 1)
         {
-            return PartialView("~/Areas/Admin/Views/ManageCourse/_AllCourses.cshtml", await _CS.GetList());
-        }
-        public async Task<IActionResult> AllCoursesDraft()
+            var courses = await _CS.GetList(c => c.Status == "draft");
+
+            var pagedCourses = courses
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            int totalCourses = courses.Count;
+
+            return PartialView("~/Areas/Admin/Views/ManageCourse/_AllCourses.cshtml", new PagedCourses
+            {
+                Courses = pagedCourses,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalCourses / (double)pageSize)
+            });
+           }
+        [HttpGet]
+        public async Task<IActionResult> AllCoursesPublished(int pageSize = 3, int pageNumber = 1)
         {
-            return PartialView("~/Areas/Admin/Views/ManageCourse/_AllCourses.cshtml", await _CS.GetList(c => c.Status == "draft" ));
-        }
-        public async Task<IActionResult> AllCoursesPublished()
-        {
-            return PartialView("~/Areas/Admin/Views/ManageCourse/_AllCourses.cshtml", await _CS.GetList(c =>  c.Status == "published"));
-        }
+            var courses = await _CS.GetList(c => c.Status == "published");
+
+            var pagedCourses = courses
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            int totalCourses = courses.Count;
+
+            return PartialView("~/Areas/Admin/Views/ManageCourse/_AllCourses.cshtml", new PagedCourses
+            {
+                Courses = pagedCourses,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalCourses / (double)pageSize)
+            });
+         }
         [HttpPost]
         public async Task<IActionResult> DeleteCourse(int id)
         {

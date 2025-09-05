@@ -84,14 +84,14 @@ namespace BLL.ImplementServices
         }
         public async Task<List<CourseDTO>> GetList(Expression<Func<Course, bool>> filter)
         {
-            List<Course> chiefs = await _CR.GetAllByFilter(filter);
+            List<Course> courses = await _CR.GetAllByFilter(filter);
 
-            if (chiefs == null || chiefs.Count == 0)
+            if (courses == null || courses.Count == 0)
             {
                 return new List<CourseDTO>();
             }
 
-            return new CourseMapper().MapToCourseDTOList(chiefs);
+            return new CourseMapper().MapToCourseDTOList(courses);
         }
         public async Task<Course?> Update(CourseDTO Course)
         {

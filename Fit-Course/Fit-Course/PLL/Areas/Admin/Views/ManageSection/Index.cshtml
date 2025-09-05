@@ -71,27 +71,12 @@
 
     
 
-    <!-- Courses Grid -->
+   
     <!-- Course Card  -->
     <div id="AllSections">
     </div>
 
-    <!-- Pagination -->
-    <div class="pagination-container">
-        <nav aria-label="Course pagination">
-            <ul class="pagination justify-content-center mb-0">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+   
 </div>
 
 <div id="AddSectionModal"></div>
@@ -102,13 +87,13 @@
     <script>
         window.onload = async function () {
             console.log("all sections , hi");
-            await GetAllSections();
+            await GetAllSections(1);
         };
-        function GetAllSections() {
+        function GetAllSections(pageNumber) {
 
             console.log("hi");
             $.ajax({
-                url: "/Admin/Section/AllSections", success: function (result) {
+                url: "/Admin/Section/AllSections?pageNumber=" + pageNumber, success: function (result) {
 
                     $("#AllSections").html(result);
 

@@ -3,6 +3,9 @@ using BLL.DTOS.SectionDTOS;
 using BLL.Services;
 using DAL.Entities.course;
 using Microsoft.AspNetCore.Mvc;
+using PLL.Areas.Admin.ViewsModels;
+using PLL.Areas.Admin.ViewsModels.SectionVM;
+using System.Drawing.Printing;
 
 namespace PLL.Controllers
 {
@@ -85,13 +88,29 @@ namespace PLL.Controllers
             return Json(new { success = false, message = allErrorsText });
 
         }
-        public async Task<IActionResult> AllSections()
+        [HttpGet]
+        public async Task<IActionResult> AllSections(int pageSize = 3, int pageNumber = 1)
         {
             var courseId = HttpContext.Session.GetInt32("CurrentCourseId");
             if (courseId == null)
                 return BadRequest("No course selected.");
-            
-            return PartialView("~/Areas/Admin/Views/ManageSection/_AllSections.cshtml", await _SS.GetList(s => s.CourseId == courseId));
+
+            var sections = await _SS.GetList();
+
+            var pagedSections = sections
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            int totalCourses = sections.Count;
+
+            return PartialView("~/Areas/Admin/Views/ManageSection/_AllSections.cshtml", new PagedSections
+            {
+                Sections = pagedSections,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalCourses / (double)pageSize)
+            });
+           
         }
 
         [HttpPost]

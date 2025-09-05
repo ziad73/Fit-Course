@@ -1,7 +1,7 @@
 ﻿
-@model List<CourseDTO>
+@model PagedCourses
 <div class="row">
-    @foreach(var c in @Model)
+    @foreach(var c in @Model.Courses)
 {
     <div class="col-lg-4 col-md-6 mb-4">
         <div class="course-card">
@@ -45,5 +45,24 @@
     </div>
 }
     </div>
+<!-- Pagination -->
+<nav aria-label="Course pagination">
+    <ul class="pagination justify-content-center mb-0">
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="javascript:void(0)" onclick="GetAllCourses(@(Model.CurrentPage - 1))">Previous</a>
+        </li>
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                <a class="page-link" href="javascript:void(0)" onclick="GetAllCourses(@i)">@i</a>
+            </li>
+        }
+
+        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="javascript:void(0)" onclick="GetAllCourses(@(Model.CurrentPage + 1))">Next</a>
+        </li>
+    </ul>
+</nav>
 
 
