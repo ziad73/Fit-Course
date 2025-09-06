@@ -19,7 +19,7 @@ namespace DAL.Database
 
     public class FitCourseDb : IdentityDbContext<User>
     {
-        // public FitCourseDb() { }
+        public FitCourseDb() { }
 
         public FitCourseDb(DbContextOptions<FitCourseDb> options) : base(options) { }
         public DbSet<Payment> Payment { get; set; }

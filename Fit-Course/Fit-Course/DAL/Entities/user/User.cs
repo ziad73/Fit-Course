@@ -13,20 +13,24 @@ namespace DAL.Entities.user
 {
     public class User : IdentityUser
     {
-        [Required(ErrorMessage = "The Name is Required.")]
         public string FullName { get; set; }
-
-        [Required(ErrorMessage = "The Gender is Required.")]
-        public UserGender Gender { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? BLockedOn { get; set; }
         public bool IsBLocked { get; set; } = false;
         public string? BlockedBy { get; set; }
-        public Instructor Instructor { get; set; } // Navigation property
+        public Instructor? Instructor { get; set; } // Navigation property
+
+        public string? ResetCode { get; set; }
+        public DateTime? ResetCodeExpiry { get; set; }
 
         //M TO M
-        public List<CoachProgress> Progresses { get; set; }
-        public List<QuizAttempt> QuizAttempts { get; set; }
-        public List<Enrollment> Enrollments { get; set; }
+        public List<CoachProgress>? Progresses { get; set; }
+        public List<QuizAttempt>? QuizAttempts { get; set; }
+        public List<Enrollment>? Enrollments { get; set; }
+
+        //Language
+        //HeadLine
+        //Bio
+        //Social media links 
     }
 }
