@@ -15,23 +15,24 @@ namespace DAL.Entities.course
         public string Title { get; set; }
         [Required(ErrorMessage = "The Description is Required.")]
         public string Description { get; set; }
-        public string? Status { get; set; }
+        [Required(ErrorMessage = "The Status is Required.")]
+
+        public string Status { get; set; }
       
        
         
 
-        public Instructor Instructor { get; set; }//navigation property
-        [Required(ErrorMessage = "The Instructor Id is Required.")]
-
-        public int InstructorId { get; set; }
-        public List<Section> Sections { get; set; }
+        public Instructor? Instructor { get; set; }//navigation property
+                                                   // [Required(ErrorMessage = "The Instructor Id is Required.")]
+        [ForeignKey("Instructor")]
+        public int? InstructorId { get; set; }
+        public List<Section>? Sections { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
         public string? ModifiedBy { get; set; }
-        public DateTime? DeletedOn { get; set; }
-        public string? DeletedBy { get; set; }
-        public bool IsDeleted { get; set; }
+       
+        
         [Required(ErrorMessage = "The Course Price is Required.")]
         [Range(0, double.MaxValue, ErrorMessage = "The Price muset be more than or equal 0")]
         public double Price { get; set; }

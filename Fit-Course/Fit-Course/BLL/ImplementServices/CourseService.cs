@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,29 +32,28 @@ namespace BLL.ImplementServices
         {
             if (Course == null)
                 return null;
-            var user = await userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+           // var user = await userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             Course mappedCourse = new CourseMapper().MapToCourse(Course);
             mappedCourse.CreatedOn = DateTime.UtcNow;
-            mappedCourse.CreatedBy = user.FullName;
-            mappedCourse.ImagePath= Upload.UploadFile("Docs", Course.ImageUrl);
-            mappedCourse.InstructorId=Course.InstructorId;
-            mappedCourse.IsDeleted = false;
+            mappedCourse.CreatedBy = ""/*user.FullName*/;
+            mappedCourse.ImagePath= Course.ImageUrl!=null? Upload.UploadFile("CourseImages", Course.ImageUrl):null;
+            mappedCourse.InstructorId= Course.InstructorId != null ? Course.InstructorId : null;
+           
             await _CR.Create(mappedCourse);
             return mappedCourse;
         }
 
+       
         public async Task<bool> Delete(int id)
         {
             Course t = await _CR.GetByID(id);
             var user = await userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-            if (t == null || t.IsDeleted == true)
+            if (t == null )
             {
                 return false;
             }
-            t.IsDeleted = true;
-            t.DeletedOn = DateTime.UtcNow;
-            t.DeletedBy = user.FullName;
-            await _CR.Update(t);
+           
+            await _CR.Delete(t);
             return true;
         }
 
@@ -61,7 +61,7 @@ namespace BLL.ImplementServices
         {
             Course t = await _CR.GetByID(id);
 
-            if (t == null || t.IsDeleted == true)
+            if (t == null )
             {
                 return null;
             }
@@ -72,7 +72,7 @@ namespace BLL.ImplementServices
 
         public async Task<List<CourseDTO>> GetList()
         {
-            List<Course> Courses = (await _CR.GetAll()).Where(t => t.IsDeleted == false).ToList();
+            List<Course> Courses = (await _CR.GetAll());
 
             if (Courses == null || Courses.Count == 0)
             {
@@ -82,7 +82,17 @@ namespace BLL.ImplementServices
             List<CourseDTO> CoursesDTO = new CourseMapper().MapToCourseDTOList(Courses);
             return CoursesDTO;
         }
+        public async Task<List<CourseDTO>> GetList(Expression<Func<Course, bool>> filter)
+        {
+            List<Course> courses = await _CR.GetAllByFilter(filter);
 
+            if (courses == null || courses.Count == 0)
+            {
+                return new List<CourseDTO>();
+            }
+
+            return new CourseMapper().MapToCourseDTOList(courses);
+        }
         public async Task<Course?> Update(CourseDTO Course)
         {
             if (Course == null)
@@ -95,10 +105,10 @@ namespace BLL.ImplementServices
             UpdateCourse.Description = Course.Description;
             UpdateCourse.Title = Course.Title;
             UpdateCourse.Price = Course.Price;
-            UpdateCourse.InstructorId = Course.InstructorId;
+            UpdateCourse.InstructorId = Course.InstructorId!=null ? Course.InstructorId:null;
             UpdateCourse.ModifiedOn = DateTime.UtcNow;
-            UpdateCourse.ModifiedBy = user.FullName;
-            UpdateCourse.IsDeleted = false;
+            UpdateCourse.ModifiedBy ="" /*user.FullName*/;
+           
             await _CR.Update(UpdateCourse);
             return UpdateCourse;
         }

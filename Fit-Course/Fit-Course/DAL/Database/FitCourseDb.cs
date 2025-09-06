@@ -17,23 +17,23 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.Database
 {
 
-    public class FitCourseDb : IdentityDbContext<User>
+    public partial class FitCourseDb : IdentityDbContext<User>
     {
         public FitCourseDb() { }
 
         public FitCourseDb(DbContextOptions<FitCourseDb> options) : base(options) { }
-        public DbSet<Payment> Payment { get; set; }
-        public DbSet<AnswerOption> AnswerOption { get; set; }
-        public DbSet<CoachProgress> CoachProgress { get; set; }
-        public DbSet<Course> Course { get; set; }
-        public DbSet<Enrollment> Enrollment { get; set; }
-        public DbSet<Question> Question { get; set; }
-        public DbSet<Quiz> Quiz { get; set; }
-        public DbSet<QuizAttempt> QuizAttempt { get; set; }
-        public DbSet<Section> Section { get; set; }
-        public DbSet<Slide> Slide { get; set; }
-        public DbSet<Video> Video { get; set; }
-        public DbSet<Instructor> Instructor { get; set; }
+        public virtual DbSet<Payment> Payment { get; set; }
+        public virtual DbSet<AnswerOption> AnswerOption { get; set; }
+        public virtual DbSet<CoachProgress> CoachProgress { get; set; }
+        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<Enrollment> Enrollment { get; set; }
+        public virtual DbSet<Question> Question { get; set; }
+        public virtual DbSet<Quiz> Quiz { get; set; }
+        public virtual DbSet<QuizAttempt> QuizAttempt { get; set; }
+        public virtual DbSet<Section> Section { get; set; }
+        public virtual DbSet<Slide> Slide { get; set; }
+        public virtual DbSet<Video> Video { get; set; }
+        public virtual DbSet<Instructor> Instructor { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

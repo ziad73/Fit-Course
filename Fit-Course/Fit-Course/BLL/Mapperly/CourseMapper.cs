@@ -1,11 +1,7 @@
 ﻿using BLL.DTOS.CourseDTOS;
 using DAL.Entities.course;
 using Riok.Mapperly.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BLL.Mapperly
 {

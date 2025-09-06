@@ -5,6 +5,7 @@ using BLL.Services.UserServices;
 using DAL;
 using DAL.Database;
 using DAL.Entities.course;
+using DAL.Entities.section;
 using DAL.Entities.user;
 using DAL.Repository;
 using DAL.Repository.ImplementRepository;
@@ -16,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
 builder.Services.AddHttpContextAccessor();
 var con = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -29,6 +33,7 @@ builder.Services.AddDbContext<FitCourseDb>(options =>
 );
 // repos injection
 builder.Services.AddScoped<IRepository<Course>, CourseRepo>();
+builder.Services.AddScoped<IRepository<Section>, SectionRepo>();
 
 
 // services injection
@@ -36,6 +41,8 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
+
+builder.Services.AddScoped<ISectionService, SectionService>();
 
 builder.Services.AddIdentity<User, IdentityRole>(option =>
 {
@@ -66,9 +73,13 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.MapControllerRoute(
+    name: "area",
+    pattern: "{area=exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseSession();
 
 app.Run();

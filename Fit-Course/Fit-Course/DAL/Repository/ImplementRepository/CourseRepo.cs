@@ -23,19 +23,26 @@ namespace DAL.Repository.ImplementRepository
                 .Include(c => c.Sections)
                 .Include(c => c.Instructor)
                 .Include(c => c.Enrollments)
-                .Where(r => r.IsDeleted == false)
+               
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<int?> Create(Course entity)
-        {
-            if (entity == null)
+         {
+            try
             {
-                return null;
-            }
+                if (entity == null)
+                {
+                    return null;
+                }
 
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
+                await _context.Course.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                
+            }
+            catch (Exception ex) { 
+            Console.WriteLine(ex.ToString());
+            }
             return entity.Id;
         }
 
@@ -53,7 +60,7 @@ namespace DAL.Repository.ImplementRepository
         public async Task<List<Course>> GetAll()
         {
             return await _context.Course
-                         .Where(r => r.IsDeleted == false)
+                         
                          .Include(c => c.Sections)
                          .Include(c => c.Instructor)
                          .Include(c => c.Enrollments)
