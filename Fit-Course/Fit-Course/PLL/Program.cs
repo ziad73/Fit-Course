@@ -2,8 +2,12 @@ using BLL.ImplementServices;
 using BLL.Services;
 using DAL;
 using DAL.Database;
+using DAL.Entities.answerOption;
 using DAL.Entities.course;
+using DAL.Entities.question;
+using DAL.Entities.quiz;
 using DAL.Entities.section;
+using DAL.Entities.slide;
 using DAL.Entities.user;
 using DAL.Repository;
 using DAL.Repository.ImplementRepository;
@@ -32,11 +36,19 @@ builder.Services.AddDbContext<FitCourseDb>(options =>
 // repos injection
 builder.Services.AddScoped<IRepository<Course>, CourseRepo>();
 builder.Services.AddScoped<IRepository<Section>, SectionRepo>();
+builder.Services.AddScoped<IRepository<Quiz>, QuizRepo>();
+builder.Services.AddScoped<IRepository<Question>, QuestionRepo>();
+builder.Services.AddScoped<IRepository<AnswerOption>, AnswerOptionRepo>();
+builder.Services.AddScoped<IRepository<Slide>, SlideRepo>();
 
 
 // services injection
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ISectionService, SectionService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
+builder.Services.AddScoped<ISlideService, SlideService>();
 
 builder.Services.AddIdentity<User, IdentityRole>(option =>
 {

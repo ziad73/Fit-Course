@@ -1,5 +1,4 @@
-﻿
-@model PagedSections
+﻿@model PagedSections
 
 
 <div class="row">
@@ -13,7 +12,7 @@
                         <span class="order-badge me-3">@s.OrderIndex</span>
                         <div>
                             <h6 class="mb-1">@s.Title</h6>
-                            
+
                         </div>
                     </div>
                     <div class="dropdown">
@@ -23,7 +22,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#" onclick="editSection('@s.Id')"><i class="fas fa-edit me-2"></i>Edit</a></li>
                             <li><a class="dropdown-item" href="admin-videos.html"><i class="fas fa-video me-2"></i>Manage Videos</a></li>
-                            <li><a class="dropdown-item" href="/Admin/Slide/Index?sectionId=@s.Id"><i class="fas fa-file-powerpoint me-2"></i>Manage Slides</a></li>
+                            <li><a class="dropdown-item" href="admin-slides.html"><i class="fas fa-file-powerpoint me-2"></i>Manage Slides</a></li>
                             <li><a class="dropdown-item" href="admin-quizzes.html"><i class="fas fa-question-circle me-2"></i>Manage Quizzes</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="#" onclick="deleteSection('@s.Id')"><i class="fas fa-trash me-2"></i>Delete</a></li>
@@ -75,7 +74,7 @@
     }
 </div>
 <!-- Pagination -->
-<nav aria-label="Section pagination">
+<nav aria-label="Course pagination">
     <ul class="pagination justify-content-center mb-0">
         <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
             <a class="page-link" href="javascript:void(0)" onclick="GetAllSections(@(Model.CurrentPage - 1))">Previous</a>

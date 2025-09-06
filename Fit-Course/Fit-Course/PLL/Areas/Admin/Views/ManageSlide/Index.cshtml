@@ -1,129 +1,179 @@
-﻿
-   @{
+﻿@{
     Layout = "_AdminLayout";
-   }
+}
+@section Styles {
+    <style>
+        .slide-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+            .slide-card:hover {
+                transform: translateY(-2px);
+            }
+
+        .slide-preview {
+            width: 100%;
+            height: 120px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            border: 2px dashed #dee2e6;
+        }
+
+        .file-type-badge {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .file-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+    </style>
+}
 <partial name="_NotificationModal" />
-    <!-- Main Content -->
+<!-- Main Content -->
 <div class="col-md-9 col-lg-10 p-4">
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="mb-1">Course Management</h2>
-            <p class="text-muted mb-0">Manage all courses, content, and learning materials.</p>
+            <h2 class="mb-1">Slides Management</h2>
+            <p class="text-muted mb-0">Upload and manage presentation slides and documents.</p>
         </div>
         <div>
-            <button class="btn btn-primary me-2" onclick="AddCourseModal()">
-                <i class="fas fa-plus me-2"></i>Add New Course
+            <button class="btn btn-primary me-2" onclick="AddSlideModal()">
+                <i class="fas fa-plus me-2"></i>Add New Slides
             </button>
-           
+            
         </div>
     </div>
 
-    <!-- Filters Section -->
-    <div class="filters-section">
+    <!-- Filters Slide -->
+    <div class="filters-Slide">
         <div class="row">
             <div class="col-md-4 mb-3">
                 <div class="search-box">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="form-control" placeholder="Search courses...">
+                    <input type="text" class="form-control" placeholder="Search Slides...">
                 </div>
             </div>
-               
-        </div>
-    </div>
 
-    <!-- Bulk Actions -->
-    <div class="bulk-actions py-3">
-        <div class="row justify-content-end">
-            <div class="col-md-6 text-end">
-                <div class="btn-group" role="group" aria-label="Bulk actions">
-                    <button onclick="GetAllCourses()" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-list me-1"></i> All Selected
-                    </button>
-                    <button onclick="GetAllCoursesPublished()" class="btn btn-outline-success btn-sm">
-                        <i class="fas fa-check me-1"></i> Publish Selected
-                    </button>
-                    <button onclick="GetAllCoursesDraft()" class="btn btn-outline-danger btn-sm">
-                        <i class="fas fa-times me-1"></i> Draft Selected
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 
 
-    <!-- Courses Grid -->
+
+
     
-        <!-- Course Card  -->
-       <div id="AllCourses">
+    <div id="AllSlides">
+    </div>
 
-       </div>
-    
-   
-   
-  </div>
-       
-<div id="AddCourseModal"></div>
 
-<div id="EditCourseModal"></div>
+</div>
 
-@section Scripts{
+<div id="AddSlideModal"></div>
+
+<div id="EditSlideModal"></div>
+
+@section Scripts {
     <script>
         window.onload = async function () {
-
-            await GetAllCourses(1);
+            console.log("all Slides , hi");
+            await GetAllSlides(1);
         };
-        function GetAllCourses(pageNumber) {
-            console.log(pageNumber);
+        function GetAllSlides(pageNumber) {
+
             console.log("hi");
             $.ajax({
-                url: "/Admin/Course/AllCourses?pageNumber=" + pageNumber, success: function (result) {
+                url: "/Admin/Slide/AllSlides?pageNumber=" + pageNumber, success: function (result) {
 
-                    $("#AllCourses").html(result);
+                    $("#AllSlides").html(result);
 
                 }
             });
 
         };
-        function GetAllCoursesPublished(pageNumber) {
+
+        function AddSlideModal() {
 
             console.log("hi");
             $.ajax({
-                url: "/Admin/Course/AllCoursesPublished?pageNumber="+pageNumber, success: function (result) {
-
-                    $("#AllCourses").html(result);
-
-                }
-            });
-
-        };
-        function GetAllCoursesDraft(pageNumber) {
-
-            console.log("hi");
-            $.ajax({
-                url: "/Admin/Course/AllCoursesDraft?pageNumber=" + pageNumber, success: function (result) {
-
-                    $("#AllCourses").html(result);
-
-                }
-            });
-
-        };
-        function AddCourseModal() {
-
-            console.log("hi");
-            $.ajax({
-                url: "/Admin/Course/AddCourse", success: function (result) {
+                url: "/Admin/Slide/AddSlide", success: function (result) {
 
 
-                    $("#AddCourseModal").html(result);
-                    var modal = new bootstrap.Modal(document.getElementById('addCourseModal'));
+                    $("#AddSlideModal").html(result);
+                    var modal = new bootstrap.Modal(document.getElementById('addSlideModal'));
                     modal.show();
                 }
             });
 
         };
-        $(document).on('submit', '#courseForm', function (e) {
+        $(document).on('submit', '#editSlideForm', function (e) {
+            e.preventDefault(); // prevent page refresh
+            console.log("hi");
+            var form = $(this)[0];          // raw DOM form element
+            var formData = new FormData(form); // captures files + inputs
+
+
+            $.ajax({
+                url: '/Admin/Slide/SaveEditSlide',
+                type: 'POST',
+                data: formData,
+                processData: false,   // tell jQuery not to convert to query string
+                contentType: false,   // tell jQuery not to set content-type header
+                success: function (response) {
+
+                    if (response.success) {
+                        // Set the message and show the modal
+                        $('#notificationModalBody').text(response.message);
+                        $('#notificationModal').modal('show');
+                    } else if (response.html) {
+                        // Validation failed - replace the modal content with validation errors
+                        $("#EditSlideModal").html(result);
+                        var modal = new bootstrap.Modal(document.getElementById('editSlideModal'));
+                        modal.show();
+                    }else {
+
+                        $('#notificationModalLabel').text("Error");
+                        $('#notificationModalBody').text(response.message);
+                        $('#notificationModal').modal('show');
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", error);       // short message
+                    console.error("Status:", status);          // status text (e.g. error, timeout)
+                    console.error("Response:", xhr.responseText); // full response from server
+                    alert("Error: " + error + "\n" + xhr.responseText); // optional alert
+                }
+
+            });
+        });
+
+        $(document).on('submit', '#SlideForm', function (e) {
             e.preventDefault(); // prevent page refresh
             console.log("Submitting with file...");
 
@@ -131,7 +181,7 @@
             var formData = new FormData(form); // captures files + inputs
 
             $.ajax({
-                url: '/Admin/Course/SaveNewCourse',
+                url: '/Admin/Slide/SaveNewSlide',
                 type: 'POST',
                 data: formData,
                 processData: false,   // tell jQuery not to convert to query string
@@ -141,8 +191,8 @@
                         $('#notificationModalBody').text(response.message);
                         $('#notificationModal').modal('show');
                     } else if (response.html) {
-                        $("#AddCourseModal").html(response.html);
-                        var modal = new bootstrap.Modal(document.getElementById('addCourseModal'));
+                        $("#AddSlideModal").html(response.html);
+                        var modal = new bootstrap.Modal(document.getElementById('addSlideModal'));
                         modal.show();
                     } else {
                         $('#notificationModalLabel').text("Error");
@@ -158,44 +208,7 @@
                 }
             });
         });
-        $(document).on('submit', '#editCourseForm', function (e) {
-            e.preventDefault(); // prevent page refresh
-            console.log("Submitting with file...");
 
-            var form = $(this)[0];          // raw DOM form element
-            var formData = new FormData(form); // captures files + inputs
-
-            $.ajax({
-                url: '/Admin/Course/SaveEditCourse',
-                type: 'POST',
-                data: formData,
-                processData: false,   // tell jQuery not to convert to query string
-                contentType: false,   // tell jQuery not to set content-type header
-                success: function (response) {
-                    if (response.success) {
-                        $('#notificationModalBody').text(response.message);
-                        $('#notificationModal').modal('show');
-                    } else if (response.html) {
-                        $("#EditCourseModal").html(response.html);
-                        var modal = new bootstrap.Modal(document.getElementById('editCourseModal'));
-                        modal.show();
-                    } else {
-                        $('#notificationModalLabel').text("Error");
-                        $('#notificationModalBody').text(response.message);
-                        $('#notificationModal').modal('show');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("AJAX Error:", error);
-                    console.error("Status:", status);
-                    console.error("Response:", xhr.responseText);
-                    alert("Error: " + error + "\n" + xhr.responseText);
-                }
-            });
-        });
-
-       
-        
         // Admin courses page functionality
         document.addEventListener('DOMContentLoaded', function () {
             // Update active navigation
@@ -207,17 +220,18 @@
                 });
             });
 
-           
+
             // Search functionality
             const searchInput = document.querySelector('.search-box input');
             searchInput.addEventListener('input', function () {
                 const searchTerm = this.value.toLowerCase();
-                const courseCards = document.querySelectorAll('.course-card');
+                const SlideCards = document.querySelectorAll('.Slide-card');
 
-                courseCards.forEach(card => {
-                    const courseTitle = card.querySelector('h6').textContent.toLowerCase();
+                SlideCards.forEach(card => {
+                    const SlideTitle = card.querySelector('h6').textContent.toLowerCase();
+                    const courseName = card.querySelector('small').textContent.toLowerCase();
 
-                    if (courseTitle.includes(searchTerm)) {
+                    if (SlideTitle.includes(searchTerm) || courseName.includes(searchTerm)) {
                         card.style.display = 'block';
                     } else {
                         card.style.display = 'none';
@@ -227,26 +241,26 @@
         });
 
         // Course CRUD functions
-        function editCourse(courseId) {
-            console.log(courseId);
+        function editSlide(SlideId) {
+            console.log(SlideId);
             $.ajax({
-                url: "/Admin/Course/EditCourse?courseId=" + courseId, success: function (result) {
+                url: "/Admin/Slide/EditSlide?SlideId=" + SlideId, success: function (result) {
 
 
-                    $("#EditCourseModal").html(result);
-                    const editModal = new bootstrap.Modal(document.getElementById('editCourseModal'));
+                    $("#EditSlideModal").html(result);
+                    const editModal = new bootstrap.Modal(document.getElementById('editSlideModal'));
                     editModal.show();
                 }
             });
 
-           
+
         }
 
-        function deleteCourse(courseId) {
-            console.log(courseId);
+        function deleteSlide(SlideId) {
+            console.log(SlideId);
             // Change modal content for confirmation
             $('#notificationModalLabel').text("Confirm Deletion");
-            $('#notificationModalBody').text("Are you sure you want to delete this course? This action cannot be undone.");
+            $('#notificationModalBody').text("Are you sure you want to delete this Slide? This action cannot be undone.");
 
             // Temporarily replace the footer with Cancel + Delete buttons
             var originalFooter = $('#notificationModal .modal-footer').html();
@@ -261,9 +275,9 @@
             // Bind Delete button action
             $(document).off('click', '#confirmDeleteBtn').on('click', '#confirmDeleteBtn', function () {
                 $.ajax({
-                    url: '/Admin/Course/DeleteCourse',
+                    url: '/Admin/Slide/DeleteSlide',
                     type: 'POST',
-                    data: { id: courseId },
+                    data: { id: SlideId },
                     success: function (response) {
                         if (response.success) {
                             $('#notificationModalLabel').text("Success");
@@ -280,7 +294,7 @@
                         $('#notificationModal .modal-footer').html(originalFooter);
 
                         // Optionally remove course card from DOM if you have course-{id} wrapper
-                        $(`#course-${courseId}`).fadeOut(500, function () {
+                        $(`#course-${SlideId}`).fadeOut(500, function () {
                             $(this).remove();
                         });
                     },
@@ -296,6 +310,6 @@
             });
         }
 
-       
+
     </script>
 }

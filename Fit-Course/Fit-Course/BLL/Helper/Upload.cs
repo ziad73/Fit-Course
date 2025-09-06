@@ -9,7 +9,7 @@ namespace BLL.Helper
 {
     public static class Upload
     {
-        public static string UploadFile(string FolderName, IFormFile File)
+        public static async Task<string> UploadFile(string FolderName, IFormFile File)
         {
 
             try

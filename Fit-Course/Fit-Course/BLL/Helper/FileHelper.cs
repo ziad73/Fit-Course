@@ -5,7 +5,7 @@ namespace BLL.Helper
 {
     public class FileHelper
     {
-        public static FileType? GetFileTypeFromPath(string filePath)
+        public static async Task<FileType?> GetFileTypeFromPath(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 return null;

@@ -12,7 +12,11 @@ namespace DAL.Entities.slide
         public int Id { get; set; }
         [Required(ErrorMessage ="The File Path is Required.")]
         public string FilePath { get; set; }
+        [Required(ErrorMessage = "The Title is Required.")]
+
+        public string Title { get; set; }
         [Required(ErrorMessage ="The File Type is Required.")]
+        
         public FileType Type { get; set; }
         [Required(ErrorMessage ="The Section Id is Required.")]
         [ForeignKey("Section")]

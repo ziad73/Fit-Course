@@ -5,11 +5,11 @@ namespace DAL.Enum.fileType
         pdf = 0,
         pptx = 1,
         doc = 2,
-        docx = 3,
-        txt = 4,
-        rtf = 5,
-        odt = 6,
-        xlsx = 7,
-        csv = 8
+        txt = 3,
+        xlsx = 4,
+        docx = 5,
+        rtf=6,
+        odt=7,
+        csv=8
     }
 }

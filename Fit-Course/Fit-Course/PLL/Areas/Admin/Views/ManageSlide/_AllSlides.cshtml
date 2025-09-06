@@ -1,0 +1,95 @@
+﻿@model PagedSlides
+
+
+<div class="row">
+
+    @foreach (var s in @Model.Slides)
+    {
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="slide-card">
+                <div class="slide-preview">
+                    @{
+                        if (s.Type.ToString() == "pdf")
+                        {
+                            <i class="fas fa-file-pdf fa-3x" title="PDF"></i>
+                        }
+                        else if (s.Type.ToString() == "pptx")
+                        {
+                            <i class="fas fa-file-powerpoint fa-3x" title="PowerPoint"></i>
+                        }
+                        else if (s.Type.ToString() == "doc" || s.Type.ToString() == "docx")
+                        {
+                            <i class="fas fa-file-word fa-3x" title="Word"></i>
+                        }
+                        else if (s.Type.ToString() == "xlsx")
+                        {
+                            <i class="fas fa-file-excel fa-3x" title="Excel"></i>
+                        }
+                        else if (s.Type.ToString() == "csv")
+                        {
+                            <i class="fas fa-file-csv fa-3x" title="CSV"></i>
+                        }
+                        else if (s.Type.ToString() == "txt" || s.Type.ToString() == "rtf" || s.Type.ToString() == "odt")
+                        {
+                            <i class="fas fa-file-alt fa-3x" title="Text"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-file fa-3x" title="File"></i> <!-- fallback -->
+                        }
+                    }
+                </div>
+
+                 <div class="d-flex justify-content-between align-items-start mb-2">
+
+                        <h6 class="mb-1">@s.Title</h6>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="editSlide('@s.Id')"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                            <li><a class="dropdown-item" href="your_file_path.pdf" download><i class="fas fa-download me-2"></i>Download</a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="deleteSlide('@s.Id')"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                        </ul>
+                    </div>
+                  </div>
+                    
+               
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary btn-sm flex-fill" onclick="editSlide('@s.Id')">
+                        <i class="fas fa-edit me-1"></i>Edit
+                    </button>
+                    <button type="button" class="btn btn-outline-warning btn-sm" onclick="deleteSlide('@s.Id')">
+                        <i class="fas fa-archive"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+       
+    }
+</div>
+<!-- Pagination -->
+<nav aria-label="Slide pagination">
+    <ul class="pagination justify-content-center mb-0">
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="javascript:void(0)" onclick="GetAllSlides(@(Model.CurrentPage - 1))">Previous</a>
+        </li>
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                <a class="page-link" href="javascript:void(0)" onclick="GetAllSlides(@i)">@i</a>
+            </li>
+        }
+
+        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="javascript:void(0)" onclick="GetAllSlides(@(Model.CurrentPage + 1))">Next</a>
+        </li>
+    </ul>
+</nav>
+

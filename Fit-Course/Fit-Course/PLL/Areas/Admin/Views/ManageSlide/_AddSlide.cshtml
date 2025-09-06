@@ -1,0 +1,39 @@
+﻿<!-- Add Slide Modal -->
+@model SlideDTO
+
+<div class="modal fade" id="addSlideModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Slide</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="SlideForm" asp-area="Admin" asp-controller="Slide" asp-action="SaveNewSlide" class="needs-validation dark-form-container" enctype="multipart/form-data" method="post">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Slide Title</label>
+                            <input type="text" class="form-control" asp-for="@Model.Title">
+
+                        </div>
+                       
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Slide Path</label>
+                        <input type="file" class="form-control" asp-for="@Model.SlideUrl">
+
+                    </div>
+
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Slide</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

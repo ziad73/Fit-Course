@@ -95,7 +95,7 @@ namespace PLL.Controllers
             if (courseId == null)
                 return BadRequest("No course selected.");
 
-            var sections = await _SS.GetList();
+            var sections = await _SS.GetList(s=>s.CourseId==courseId);
 
             var pagedSections = sections
                 .Skip((pageNumber - 1) * pageSize)

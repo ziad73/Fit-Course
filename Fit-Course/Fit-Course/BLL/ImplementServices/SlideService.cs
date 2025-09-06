@@ -4,6 +4,7 @@ using BLL.DTOS.SlideDTOS;
 using BLL.Helper;
 using BLL.Mapperly;
 using BLL.Services;
+using DAL.Entities.course;
 using DAL.Entities.slide;
 using DAL.Entities.user;
 using DAL.Repository;
@@ -31,6 +32,8 @@ namespace BLL.ImplementServices
                 return null;
             // var user = await userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             Slide mappedSlide = new SlideMapper().MapToSlide(Slide);
+            mappedSlide.FilePath = Slide.SlideUrl != null ?await Upload.UploadFile("Slides", Slide.SlideUrl) : null;
+            var type = FileHelper.GetFileTypeFromPath(mappedSlide.FilePath);
             mappedSlide.CreatedOn = DateTime.UtcNow;
             mappedSlide.CreatedBy = ""/*user.FullName*/;
 
@@ -96,8 +99,8 @@ namespace BLL.ImplementServices
             }
             var user = await userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             Slide UpdateSlide = await _SR.GetByID(Slide.Id);
-            UpdateSlide.FilePath = Slide.FilePath;
-            var type = FileHelper.GetFileTypeFromPath(Slide.FilePath);
+            UpdateSlide.FilePath = Slide.SlideUrl != null ?await Upload.UploadFile("Slides", Slide.SlideUrl) : null;
+            var type =await FileHelper.GetFileTypeFromPath(UpdateSlide.FilePath);
             if (type == null) return null;
             UpdateSlide.Type = type.Value;
             UpdateSlide.ModifiedOn = DateTime.UtcNow;

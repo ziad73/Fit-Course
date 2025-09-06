@@ -26,7 +26,8 @@ namespace BLL.DTOS.CourseDTOS
         [Required(ErrorMessage = "The Course Price is Required.")]
         [Range(0, double.MaxValue, ErrorMessage = "The Price muset be more than or equal 0")]
         public double Price { get; set; }
-        public string? ImagePath { get; set; } 
+       
         public IFormFile? ImageUrl { get; set; }
+        public string? ImagePath { get; set; }
     }
 }

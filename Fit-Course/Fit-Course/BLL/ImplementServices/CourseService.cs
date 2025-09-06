@@ -7,12 +7,9 @@ using DAL.Entities.user;
 using DAL.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BLL.ImplementServices
 {
@@ -36,7 +33,7 @@ namespace BLL.ImplementServices
             Course mappedCourse = new CourseMapper().MapToCourse(Course);
             mappedCourse.CreatedOn = DateTime.UtcNow;
             mappedCourse.CreatedBy = ""/*user.FullName*/;
-            mappedCourse.ImagePath= Course.ImageUrl!=null? Upload.UploadFile("CourseImages", Course.ImageUrl):null;
+            mappedCourse.ImagePath= Course.ImageUrl!=null?await Upload.UploadFile("CoursesImages", Course.ImageUrl):null;
             mappedCourse.InstructorId= Course.InstructorId != null ? Course.InstructorId : null;
            
             await _CR.Create(mappedCourse);
@@ -105,6 +102,7 @@ namespace BLL.ImplementServices
             UpdateCourse.Description = Course.Description;
             UpdateCourse.Title = Course.Title;
             UpdateCourse.Price = Course.Price;
+            UpdateCourse.ImagePath = Course.ImageUrl != null ?await Upload.UploadFile("CoursesImages", Course.ImageUrl) : null;
             UpdateCourse.InstructorId = Course.InstructorId!=null ? Course.InstructorId:null;
             UpdateCourse.ModifiedOn = DateTime.UtcNow;
             UpdateCourse.ModifiedBy ="" /*user.FullName*/;
