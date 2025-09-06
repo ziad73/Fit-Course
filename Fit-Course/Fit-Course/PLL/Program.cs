@@ -1,5 +1,7 @@
 using BLL.ImplementServices;
 using BLL.Services;
+using BLL.Services.account;
+using BLL.Services.UserServices;
 using DAL;
 using DAL.Database;
 using DAL.Entities.course;
@@ -36,18 +38,24 @@ builder.Services.AddScoped<IRepository<Section>, SectionRepo>();
 
 // services injection
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+
+
 builder.Services.AddScoped<ISectionService, SectionService>();
 
 builder.Services.AddIdentity<User, IdentityRole>(option =>
 {
-    option.Password.RequiredLength = 4;
+    option.Password.RequiredLength = 6;
     option.Password.RequireDigit = false;
     option.Password.RequireNonAlphanumeric = false;
     option.Password.RequireUppercase = false;
+    option.Password.RequireLowercase = false;
     option.SignIn.RequireConfirmedAccount = true;
 
 
 }).AddEntityFrameworkStores<FitCourseDb>().AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 
