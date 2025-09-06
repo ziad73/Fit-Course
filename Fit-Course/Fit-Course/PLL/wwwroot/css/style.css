@@ -335,3 +335,33 @@ body {
 .bg-secondary { background-color: var(--bg-secondary) !important; }
 .border-primary { border-color: var(--border-color) !important; }
 
+
+/*New Ziad*/
+
+/* Reset Password Buttons */
+.btn-reset {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.btn-reset:hover {
+    background-color: #1d4ed8 !important; /* darker shade of primary */
+    border-color: #1d4ed8 !important;
+    transform: translateY(-2px);
+}
+
+/* Success button for confirmation modal */
+.btn-reset-success {
+    background-color: var(--success-color) !important;
+    border-color: var(--success-color) !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.btn-reset-success:hover {
+    background-color: #059669 !important;
+    border-color: #059669 !important;
+}
+
